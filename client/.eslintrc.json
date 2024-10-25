@@ -1,8 +1,7 @@
 {
-
   "extends": [
     // Next.js의 핵심 웹 바이탈 관련 규칙을 포함
-    "next/core-web-vitals",
+    "next/babel","next/core-web-vitals",
     // React 관련 권장 규칙을 추가
     "plugin:react/recommended",
     // React Hooks 관련 권장 규칙을 추가
