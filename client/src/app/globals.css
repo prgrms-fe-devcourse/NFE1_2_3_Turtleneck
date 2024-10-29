@@ -39,7 +39,7 @@ a {
 /* Desktop (1280px) */
 .container {
   width: 100%;
-  max-width: var(--max-width);
+  max-width: 1280px;
   margin: 0 auto;
 }
 
