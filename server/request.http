@@ -1,0 +1,130 @@
+GET http://localhost:3005/api/post
+
+###
+
+POST http://localhost:3005/api/category
+Content-Type: application/json
+
+{
+  "name": ""
+}
+
+###
+
+GET http://localhost:3005/api/category
+
+###
+GET http://localhost:3005/api/category/671f868331f52b188fc64fd0
+
+
+###
+PATCH http://localhost:3005/api/category/671f868331f52b188fc64fd0
+Content-Type: application/json
+
+{
+  "name": "",
+  "tags": ["", ""]
+}
+
+###
+
+
+POST http://localhost:3005/api/post
+Content-Type: application/json
+
+{
+  "title" : "테스트",
+  "content": "테스트 컨텐츠",
+  "mainImage": "테스트 컨텐츠",
+  "categoryId" : "671f868331f52b188fc64fd0",
+  "tags": ["테스트 컨텐츠", "테스트 컨텐츠"]
+}
+
+###
+
+
+PATCH http://localhost:3005/api/post/67203360ebca2980e98c3546
+Content-Type: application/json
+
+{
+  "title" : "",
+  "content": "",
+  "mainImage": "",
+  "categoryId" : "",
+  "tags": ["", ""]
+}
+
+###
+
+GET http://localhost:3005/api/post/67209ddf4daf93664257ed84
+
+###
+
+POST http://localhost:3005/api/like
+Content-Type: application/json
+
+{
+  "postId": "67209ddf4daf93664257ed84"
+}
+
+###
+
+DELETE http://localhost:3005/api/like/6720ecf84daf93664257ee50
+
+###
+
+POST http://localhost:3005/api/comment
+Content-Type: application/json
+
+{
+  "postId": "67209ddf4daf93664257ed84",
+  "isAdmin": false,
+  "nickname": "hana1",
+  "password": "hana2553",
+  "sessionId": "session",
+  "content": "코멘트생성테스트1"
+}
+
+###
+
+DELETE http://localhost:3005/api/comment/6720f0e84daf93664257ee65
+
+###
+
+PATCH http://localhost:3005/api/comment/6720f0e84daf93664257ee65
+Content-Type: application/json
+
+{
+  "postId": "67209ddf4daf93664257ed84",
+  "isAdmin": false,
+  "nickname": "hana2",
+  "password": "hhhhhhhhana",
+  "sessionId": "session",
+  "content": "코멘트 수정 테스트"
+}
+
+###
+
+GET http://localhost:3005/api/search/hana
+
+###
+
+POST http://localhost:3005/api/auth
+Content-Type: application/json
+
+{
+  "id": "testID",
+  "password": "testPW",
+  "nickname": "TN",
+  "blogTitle": "천방지축 돌아가는 거북목의 하루",
+  "blogInfo": "거북목 팀의 블로그에 오신것을 환영합니다. 지금까지 보지못한 멋진 기술 블로그를 구현할 수 있다는 것을 보여드리겠습니다"
+}
+
+###
+
+PATCH http://localhost:3005/api/auth/672109e196ef45010f3cd4f8
+Content-Type: application/json
+
+{
+  "nickname": "Turtle"
+}
