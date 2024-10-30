@@ -1,7 +1,55 @@
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/src/app/assets/fonts/Pretendard-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/src/app/assets/fonts/Pretendard-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/src/app/assets/fonts/Pretendard-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/src/app/assets/fonts/Pretendard-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/src/app/assets/fonts/Pretendard-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/src/app/assets/fonts/Pretendard-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GalmuriMono';
+  src: url('/src/app/assets/fonts/GalmuriMono11.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --max-witdh: 1280px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -39,7 +87,7 @@ a {
 /* Desktop (1280px) */
 .container {
   width: 100%;
-  max-width: var(--max-width);
+  max-width: 1280px;
   margin: 0 auto;
 }
 
