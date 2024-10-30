@@ -1,0 +1,39 @@
+.nav {
+    width: 100%;
+    padding-top: 20px;
+    background-color: #ffffff;
+  }
+  
+  .navContent {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .leftMenu, .rightMenu {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+  
+  .menuItem {
+    font-size: 15px;
+    color: #333;
+    text-decoration: none;
+    padding: 8px;
+    border-radius: 4px;
+    transition: color 0.2s ease;
+    background-color: #F5F5F5;
+  }
+  
+  .menuItem:hover {
+    color: #059669;
+    background-color: #25ce98;
+  }
+  
+  /* Active 상태 */
+  .menuItem[data-active="true"] {
+    color: #059669;
+    font-weight: 600;
+  }

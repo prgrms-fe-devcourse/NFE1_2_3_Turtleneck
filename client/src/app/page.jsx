@@ -1,6 +1,82 @@
+'use client';  
+
 import styles from './page.module.css';
+import { useState } from 'react';
 
 export default function Home() {
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = 10; // 총 페이지 수
+
+  // 페이지네이션 렌더링 함수
+  const renderPagination = () => {
+    let pages = [];
+    const displayPages = [];
+    
+    // 현재 페이지 주변의 페이지들 추가
+    for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
+      displayPages.push(i);
+    }
+    
+    // 첫 페이지 추가
+    if (displayPages[0] > 1) {
+      pages.push(
+        <button
+          key={1}
+          onClick={() => setCurrentPage(1)}
+          className={`${styles.pageButton} ${currentPage === 1 ? styles.active : ''}`}
+        >
+          1
+        </button>
+      );
+      
+      if (displayPages[0] > 2) {
+        pages.push(
+          <span key="ellipsis1" className={styles.ellipsis}>
+            ...
+          </span>
+        );
+      }
+    }
+    
+    // 중간 페이지들 추가
+    displayPages.forEach(pageNum => {
+      pages.push(
+        <button
+          key={pageNum}
+          onClick={() => setCurrentPage(pageNum)}
+          className={`${styles.pageButton} ${currentPage === pageNum ? styles.active : ''}`}
+        >
+          {pageNum}
+        </button>
+      );
+    });
+    
+    // 마지막 페이지 추가
+    if (displayPages[displayPages.length - 1] < totalPages) {
+      if (displayPages[displayPages.length - 1] < totalPages - 1) {
+        pages.push(
+          <span key="ellipsis2" className={styles.ellipsis}>
+            ...
+          </span>
+        );
+      }
+      
+      pages.push(
+        <button
+          key={totalPages}
+          onClick={() => setCurrentPage(totalPages)}
+          className={`${styles.pageButton} ${currentPage === totalPages ? styles.active : ''}`}
+        >
+          {totalPages}
+        </button>
+      );
+    }
+    
+    return pages;
+  };
+
+
   return (
     <div className={styles.main}>
       {/* 네비게이션 /> */}
@@ -58,6 +134,12 @@ export default function Home() {
                 </div>
               ))}
             </div>
+
+            {/* 페이지네이션 추가 */}
+            <div className={styles.pagination}>
+              {renderPagination()}
+            </div>
+
           </section>
         </div>
       </div>

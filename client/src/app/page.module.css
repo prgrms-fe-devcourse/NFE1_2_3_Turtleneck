@@ -85,13 +85,13 @@
 
 .filterBox{
   background-color: #f9fafb;
-  height: 570px;
+  height: 900px;
 }
 
 /* Feed 섹션 */
 .feedSection {
   flex: 1;
-  height: 600px; 
+  min-height: 900px; 
 }
 
 .feedHeader {
@@ -112,16 +112,66 @@
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr); /* 2행 지정 */
   gap: 24px;
-  height: calc(100% - 54px); /* 헤더 높이(30px) + 마진(24px) 제외 */
+  padding: 32px 0;
+  margin-top: auto; 
+  margin-bottom: 50px; 
+
 }
 .placeholder {
   background-color: #f3f4f6;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
-  height: 250px; /* 카드 높이 고정 */
+  height: 400px; /* 카드 높이 고정 */
 }
 
 .footer {
   padding: 32px 0;
   border-top: 1px solid #e5e7eb;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding-top: 50px;
+  margin-top: 32px;
+  font-family: 'GalmuriMono', monospace;
+  border-top: 1px dotted black
+}
+
+.pageButton {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  background-color: white;
+  color: #000000;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pageButton:hover {
+  border-color: #2ED3B7;
+  color: #2ED3B7;
+}
+
+.pageButton.active {
+  background-color: #2ED3B7;
+  border-color: #2ED3B7;
+  color: white;
+}
+
+.ellipsis {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4b5563;
+  font-family: 'GalmuriMono', monospace;
 }
