@@ -6,9 +6,7 @@ import styles from './CommentSection.module.scss';
 export default function CommentSection() {
   const [isAdmin, setIsAdmin] = useState(true); // Admin 여부 상태
   const [isEditing, setIsEditing] = useState(false);
-  const [editComment, setEditComment] = useState(
-    '예시 댓글입니다.',
-  );
+  const [editComment, setEditComment] = useState('예시 댓글입니다.');
 
   const handleEditClick = () => {
     setIsEditing(true);
@@ -60,12 +58,21 @@ export default function CommentSection() {
             <div className={styles.comment_menu}>
               {isEditing ? (
                 <div className={styles.edit_buttons}>
-                  <button className={styles.btn_save} onClick={handleSaveClick}>SAVE</button>
-                  <button className={styles.btn_cancel} onClick={handleCancelClick}>CANCEL</button>
+                  <button className={styles.btn_save} onClick={handleSaveClick}>
+                    SAVE
+                  </button>
+                  <button
+                    className={styles.btn_cancel}
+                    onClick={handleCancelClick}
+                  >
+                    CANCEL
+                  </button>
                 </div>
               ) : (
                 <>
-                  <button className={styles.btn_edit} onClick={handleEditClick}>EDIT</button>
+                  <button className={styles.btn_edit} onClick={handleEditClick}>
+                    EDIT
+                  </button>
                   <button className={styles.btn_delete}>DELETE</button>
                 </>
               )}

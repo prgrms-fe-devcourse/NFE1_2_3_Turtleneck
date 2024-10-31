@@ -9,8 +9,8 @@ const md = new MarkdownIt();
 // 페이지 컴포넌트
 const page = () => {
   // 메타데이터 태그를 확인하기 위한 더미 태그 문자열. 쉼표로 구분
-  const dummyTags = "#프론트엔드,#React,#Next.js";
-  
+  const dummyTags = '#프론트엔드,#React,#Next.js';
+
   return (
     <div className={styles.post_container}>
       {/* 헤더 섹션: 페이지 상단에 뒤로가기 버튼과 포스트 제목 */}
@@ -45,7 +45,7 @@ const page = () => {
                 <th className={styles.metadata_label}>TAGS</th>
                 <td className={styles.metadata_value}>
                   {/* 쉼표로 구분된 태그 */}
-                  {dummyTags.split(",").map((tag, index) => (
+                  {dummyTags.split(',').map((tag, index) => (
                     <span key={index} className={styles.tag}>
                       {tag.trim()}
                     </span>
