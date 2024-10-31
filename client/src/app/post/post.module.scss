@@ -104,32 +104,6 @@
     font-size: 12px;
 }
 
-.btn_share_copy {
-    width: 100%;
-    height: 32px;
-    padding: 8px 0px;
-    border: 1px solid black;
-    border-radius: 1000px;
-    background-color: transparent;
-    font-size: 14px;
-    font-family: 'Inconsolata', serif;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-}
-
-.btn_share_copy .materialIcon {
-    font-size: 14px;
-}
-
-.btn_share_copy:hover,
-.btn_share_copy:focus-visible {
-    background-color: #2ed3b7;
-    border-color: #2ed3b7;
-}
-
 .toc_item {
     border-bottom: 0.5px dotted black;
     padding: 12px 0;
