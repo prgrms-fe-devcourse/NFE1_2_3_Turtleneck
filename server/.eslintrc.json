@@ -1,0 +1,32 @@
+{
+  "extends": [
+    // Next.js의 핵심 웹 바이탈 관련 규칙을 포함
+    "next/babel",
+    "next/core-web-vitals",
+    // React 관련 권장 규칙을 추가
+    "plugin:react/recommended",
+    // React Hooks 관련 권장 규칙을 추가
+    "plugin:react-hooks/recommended",
+    // Prettier와의 충돌을 방지
+    "prettier"
+  ],
+  // 사용할 플러그인을 지정
+  "plugins": ["react", "react-hooks"],
+
+  "rules": {
+    // Next.js에서는 React를 import할 필요가 없어 이 규칙을 비활성화
+    "react/react-in-jsx-scope": "off",
+    // 사용하지 않는 변수에 대한 경고를 설정하되, 밑줄로 시작하는 변수는 무시
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    // React Hooks 규칙을 설정
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
+  },
+  // 프로젝트 설정을 지정
+  "settings": {
+    "react": {
+      // React 버전을 자동으로 감지하도록 설정
+      "version": "detect"
+    }
+  }
+}
