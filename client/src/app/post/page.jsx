@@ -2,6 +2,7 @@ import React from 'react';
 import MarkdownIt from 'markdown-it';
 import styles from './post.module.scss';
 import CommentSection from './components/comments';
+import CopyLinkButton from './components/CopyLinkButton';
 
 // MarkdownIt 인스턴스 생성 (마크다운 렌더링에 사용)
 const md = new MarkdownIt();
@@ -59,9 +60,7 @@ const page = () => {
               </tr>
             </tbody>
           </table>
-          <button className={styles.btn_share_copy}>
-            <span className={styles.materialIcon}>content_copy</span>COPY LINK
-          </button>
+          < CopyLinkButton />
         </div>
 
         {/* 목차 섹션: 포스트 내부의 헤딩 목록을 보여줌 */}
