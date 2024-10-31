@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400');
+
+.materialIcon {
+    font-family: 'Material Symbols Outlined';
+    font-weight: 400;
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.post_container {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-areas:
+        'header header'
+        'aside article'
+        'aside article'
+        '. comments';
+    grid-template-columns: 1fr 3fr;
+    gap: 0 40px;
+    padding: 0 80px;
+    list-style-position: inside;
+    font-family: Pretendard;
+}
+
+.header_section {
+    grid-area: header;
+    margin-bottom: 80px;
+}
+
+.btn_back {
+    padding: 4px 8px;
+    margin-bottom: 32px;
+    background-color: #f5f5f5;
+    border: none;
+    font-family: 'Inconsolata', serif;
+    cursor: pointer;
+}
+
+.btn_back:hover,
+.btn_back:focus-visible {
+    background-color: #2ed3b7;
+}
+
+.post_title {
+    font-size: 96px;
+    font-weight: 500;
+    line-height: 85%;
+    letter-spacing: -4.8px;
+    word-break: keep-all;
+}
+
+.section_name {
+    font-family: 'Inconsolata', serif;
+    font-size: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid black;
+}
+
+.aside_section {
+    grid-area: aside;
+    font-size: 12px;
+}
+
+.metadata_section {
+    margin-bottom: 100px;
+}
+
+.metadata_section table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.metadata_section tr {
+    border-bottom: 0.5px dotted black;
+}
+
+.metadata_section tr:last-child {
+    border-bottom: none;
+}
+
+.metadata_label,
+.metadata_value {
+    padding: 12px 0;
+    text-align: start;
+    width: 50%;
+}
+
+.metadata_label {
+    font-weight: 400;
+}
+
+.tag {
+    display: inline-block;
+    margin-right: 8px;
+    padding: 2px 8px;
+    margin: 4px 2px;
+    border: 1px dotted #000; // 점선 테두리 스타일
+    border-radius: 2px;
+    font-size: 12px;
+}
+
+.btn_share_copy {
+    width: 100%;
+    height: 32px;
+    padding: 8px 0px;
+    border: 1px solid black;
+    border-radius: 1000px;
+    background-color: transparent;
+    font-size: 14px;
+    font-family: 'Inconsolata', serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.btn_share_copy .materialIcon {
+    font-size: 14px;
+}
+
+.btn_share_copy:hover,
+.btn_share_copy:focus-visible {
+    background-color: #2ed3b7;
+    border-color: #2ed3b7;
+}
+
+.toc_item {
+    border-bottom: 0.5px dotted black;
+    padding: 12px 0;
+}
+
+.article_section {
+    grid-area: article;
+}
+
+.article_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid black;
+}
+
+.article_header .section_name {
+    border: none;
+}
+
+.article_btns {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.btn_edit,
+.btn_delete {
+    padding: 2px 12px;
+    background-color: transparent;
+    border: 0.5px solid black;
+    border-radius: 1000px;
+    font-family: 'Inconsolata', serif;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.btn_edit:hover,
+.btn_edit:focus-visible,
+.btn_delete:hover,
+.btn_delete:focus-visible {
+    background-color: #2ed3b7;
+    border-color: #2ed3b7;
+}
