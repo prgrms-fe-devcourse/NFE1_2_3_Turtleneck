@@ -1,0 +1,79 @@
+.footer_wrap {
+  display: flex;
+  max-width: 1280px;
+  margin: auto;
+  padding: 0 32px;
+  justify-content: space-between;
+}
+
+.f_section_title {
+  font-size: 12px;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+.f_tag_wrap {
+  display: flex;
+  gap: 5px;
+  width: 140px;
+  flex-wrap: wrap;
+}
+
+.f_tag {
+  font-size: 11px;
+  border-radius: 2px;
+  border: 1px dotted #000000;
+  padding: 0 6px;
+  font-weight: 400;
+}
+
+.f_section_repository {
+  font-size: 16px;
+  letter-spacing: -2%;
+}
+
+.f_left_block {
+  width: 400px;
+}
+
+.f_section_github {
+  height: 161px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.f_project_name {
+  font-size: 12px;
+  font-weight: 200;
+}
+
+.f_button {
+  width: 234px;
+  border-radius: 20px;
+  border: 1px solid #000000;
+  display: flex;
+  justify-content: center;
+  padding: 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.f_button:hover {
+  background-color: #2ed3b7;
+  border: 1px solid white;
+}
+
+.f_right_block {
+  width: 256px;
+  height: 161px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.f_section_deco {
+  display: flex;
+  height: 182px;
+  align-items: flex-end;
+}
