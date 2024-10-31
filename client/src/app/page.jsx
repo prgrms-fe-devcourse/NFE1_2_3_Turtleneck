@@ -1,10 +1,11 @@
-'use client';  
+'use client';
 
 import styles from './page.module.css';
 import { useState } from 'react';
+import Navigation from './components/navigation';
+import Footer from './components/Footer';
 
 export default function Home() {
-
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 10; // 총 페이지 수
 
@@ -12,12 +13,16 @@ export default function Home() {
   const renderPagination = () => {
     let pages = [];
     const displayPages = [];
-    
+
     // 현재 페이지 주변의 페이지들 추가
-    for (let i = Math.max(1, currentPage - 2); i <= Math.min(totalPages, currentPage + 2); i++) {
+    for (
+      let i = Math.max(1, currentPage - 2);
+      i <= Math.min(totalPages, currentPage + 2);
+      i++
+    ) {
       displayPages.push(i);
     }
-    
+
     // 첫 페이지 추가
     if (displayPages[0] > 1) {
       pages.push(
@@ -27,20 +32,20 @@ export default function Home() {
           className={`${styles.pageButton} ${currentPage === 1 ? styles.active : ''}`}
         >
           1
-        </button>
+        </button>,
       );
-      
+
       if (displayPages[0] > 2) {
         pages.push(
           <span key="ellipsis1" className={styles.ellipsis}>
             ...
-          </span>
+          </span>,
         );
       }
     }
-    
+
     // 중간 페이지들 추가
-    displayPages.forEach(pageNum => {
+    displayPages.forEach((pageNum) => {
       pages.push(
         <button
           key={pageNum}
@@ -48,20 +53,20 @@ export default function Home() {
           className={`${styles.pageButton} ${currentPage === pageNum ? styles.active : ''}`}
         >
           {pageNum}
-        </button>
+        </button>,
       );
     });
-    
+
     // 마지막 페이지 추가
     if (displayPages[displayPages.length - 1] < totalPages) {
       if (displayPages[displayPages.length - 1] < totalPages - 1) {
         pages.push(
           <span key="ellipsis2" className={styles.ellipsis}>
             ...
-          </span>
+          </span>,
         );
       }
-      
+
       pages.push(
         <button
           key={totalPages}
@@ -69,57 +74,52 @@ export default function Home() {
           className={`${styles.pageButton} ${currentPage === totalPages ? styles.active : ''}`}
         >
           {totalPages}
-        </button>
+        </button>,
       );
     }
-    
+
     return pages;
   };
-
 
   return (
     <div className={styles.main}>
       {/* 네비게이션 /> */}
-      
+      <Navigation></Navigation>
+
       <div className="container">
         {/* 히어로 섹션 */}
         <div className={styles.hero}>
           <h1 className={styles.title}>천방지축 돌아가는</h1>
-          <h2 className={styles.subtitle}><span>거북목</span>의 하루</h2>
+          <h2 className={styles.subtitle}>
+            <span>거북목</span>의 하루
+          </h2>
           <p className={styles.description}>
             거북목 팀의 블로그에 오신것을 환영합니다.<br></br>
-            지금까지 보지못한 멋진 기술 블로그를 구현할<br></br>
-            수 있다는 것을 보여드리겠습니다
+            지금까지 보지못한 멋진 기술 블로그를 구현할<br></br>수 있다는 것을
+            보여드리겠습니다
           </p>
         </div>
 
         {/* 메인 포스트 */}
         <div className={styles.main_post_section}>
           <div className={styles.main_post_header}>
-              <div className={styles.main_post_title}>/main post</div>
+            <div className={styles.main_post_title}>/main post</div>
           </div>
           <div className={styles.main_post_box}>
-            <article className={styles.card}>
-      
-            </article>
-            <article className={styles.card}>
-          
-            </article>
+            <article className={styles.card}></article>
+            <article className={styles.card}></article>
           </div>
-          
         </div>
 
-      {/* 콘텐츠 컨테이너 */}
-      <div className={styles.contentContainer}>
+        {/* 콘텐츠 컨테이너 */}
+        <div className={styles.contentContainer}>
           {/* 필터 섹션 */}
           <aside className={styles.filterSection}>
             <div className={styles.filterHeader}>
-            <h2 className={styles.filterTitle}>/Filter</h2>
+              <h2 className={styles.filterTitle}>/Filter</h2>
             </div>
-            
-            <div className={styles.filterBox}> 
 
-            </div>
+            <div className={styles.filterBox}></div>
           </aside>
 
           {/* 피드 섹션 */}
@@ -136,16 +136,13 @@ export default function Home() {
             </div>
 
             {/* 페이지네이션 추가 */}
-            <div className={styles.pagination}>
-              {renderPagination()}
-            </div>
-
+            <div className={styles.pagination}>{renderPagination()}</div>
           </section>
         </div>
       </div>
 
       <footer className={styles.footer}>
-        {/* 푸터 영역 */}
+        <Footer />
       </footer>
     </div>
   );

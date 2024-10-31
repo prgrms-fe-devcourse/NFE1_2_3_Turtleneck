@@ -20,8 +20,8 @@
   font-weight: 600; /* SemiBold */
   color: #000000;
 }
-.subtitle span{
-  background-color: #2ED3B7;
+.subtitle span {
+  background-color: #2ed3b7;
 }
 
 .description {
@@ -35,16 +35,16 @@
 .main_post_section {
   height: 400px;
 }
-.main_post_title{
+.main_post_title {
   border-bottom: 1px solid black;
   height: 30px;
   font-size: 20px;
-  color:#000000;
+  color: #000000;
   font-weight: 600;
   margin-bottom: 10px;
 }
 
-.main_post_box{
+.main_post_box {
   display: flex;
   justify-content: space-between;
   gap: 24px;
@@ -73,17 +73,17 @@
   border-radius: 8px;
   height: calc(100% -30px); /* Feed 영역의 높이와 동일하게 설정 */
 }
-.filterHeader{
+.filterHeader {
   height: 30px;
   border-bottom: 1px solid black;
 }
 .filterTitle {
   font-size: 20px;
   font-weight: 600;
-  color: #000000
+  color: #000000;
 }
 
-.filterBox{
+.filterBox {
   background-color: #f9fafb;
   height: 900px;
 }
@@ -91,7 +91,7 @@
 /* Feed 섹션 */
 .feedSection {
   flex: 1;
-  min-height: 900px; 
+  min-height: 900px;
 }
 
 .feedHeader {
@@ -103,7 +103,7 @@
 .feedTitle {
   font-size: 20px;
   font-weight: 600;
-  color: #000000
+  color: #000000;
 }
 
 .grid {
@@ -113,9 +113,8 @@
   grid-template-rows: repeat(2, 1fr); /* 2행 지정 */
   gap: 24px;
   padding: 32px 0;
-  margin-top: auto; 
-  margin-bottom: 50px; 
-
+  margin-top: auto;
+  margin-bottom: 50px;
 }
 .placeholder {
   background-color: #f3f4f6;
@@ -127,6 +126,11 @@
 .footer {
   padding: 32px 0;
   border-top: 1px solid #e5e7eb;
+  height: 400px;
+  background-image: url('/images/starBg.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  font-family: 'Pretendard', sans-serif;
 }
 
 .pagination {
@@ -137,7 +141,7 @@
   padding-top: 50px;
   margin-top: 32px;
   font-family: 'GalmuriMono', monospace;
-  border-top: 1px dotted black
+  border-top: 1px dotted black;
 }
 
 .pageButton {
@@ -156,13 +160,13 @@
 }
 
 .pageButton:hover {
-  border-color: #2ED3B7;
-  color: #2ED3B7;
+  border-color: #2ed3b7;
+  color: #2ed3b7;
 }
 
 .pageButton.active {
-  background-color: #2ED3B7;
-  border-color: #2ED3B7;
+  background-color: #2ed3b7;
+  border-color: #2ed3b7;
   color: white;
 }
 
