@@ -3,7 +3,9 @@
 import styles from './page.module.css';
 import { useState } from 'react';
 import Navigation from './components/navigation';
+import { PostCardsList } from './components/PostCard/PostCard';
 import Footer from './components/Footer';
+import { MainPostList } from './components/MainPostCard/MainPostCard';
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -106,8 +108,8 @@ export default function Home() {
             <div className={styles.main_post_title}>/main post</div>
           </div>
           <div className={styles.main_post_box}>
-            <article className={styles.card}></article>
-            <article className={styles.card}></article>
+            {/* <메인 포스트 영역 */}
+            <MainPostList />
           </div>
         </div>
 
@@ -131,6 +133,7 @@ export default function Home() {
               {[...Array(6)].map((_, index) => (
                 <div key={index} className={styles.placeholder}>
                   {/* 카드 컴포넌트 영역 */}
+                  <PostCardsList></PostCardsList>
                 </div>
               ))}
             </div>
