@@ -3,6 +3,7 @@ import MarkdownIt from 'markdown-it';
 import styles from './post.module.scss';
 import CommentSection from './components/comments';
 import CopyLinkButton from './components/CopyLinkButton';
+import LikeButton from './components/LikeButton';
 
 // MarkdownIt 인스턴스 생성 (마크다운 렌더링에 사용)
 const md = new MarkdownIt();
@@ -11,6 +12,90 @@ const md = new MarkdownIt();
 const page = () => {
   // 메타데이터 태그를 확인하기 위한 더미 태그 문자열. 쉼표로 구분
   const dummyTags = '#프론트엔드,#React,#Next.js';
+
+  // 마크다운 미리보기를 확인하기 위한 더미 마크다운 텍스트
+  const dummyMarkdown = `
+# Heading 1
+## Heading 2
+### Heading 3
+#### Heading 4
+##### Heading 5
+###### Heading 6
+
+---
+
+**굵은 텍스트**  
+*기울임 텍스트*  
+***굵은 기울임 텍스트***  
+~~취소선 텍스트~~
+
+---
+
+> 이 부분은 인용문입니다.
+> > 중첩된 인용문입니다.
+
+---
+
+1. 순서가 있는 목록 첫 번째 항목
+2. 두 번째 항목
+    1. 하위 항목
+    2. 또 다른 하위 항목
+
+- 순서 없는 목록 첫 번째 항목
+- 두 번째 항목
+  - 하위 항목
+  - 또 다른 하위 항목
+
+---
+
+### 링크와 이미지
+[Google로 이동](https://www.google.com)
+
+![Markdown 로고](https://markdown-here.com/img/icon256.png)
+
+---
+
+### 코드 블록
+
+\`\`\`javascript
+// JavaScript 코드 예시
+function greet(name) {
+    return \`Hello, \${name}!\`;
+}
+console.log(greet("Markdown"));
+\`\`\`
+
+---
+
+### 인라인 코드
+여기에 \`console.log("Hello, Markdown!");\` 와 같은 인라인 코드를 사용할 수 있습니다.
+
+---
+
+### 테이블
+
+| Feature       | Description                | Status    |
+| ------------- | -------------------------- | --------- |
+| Heading       | 제목을 지정하는 방법       | 🟢 지원함 |
+| Lists         | 순서가 있는 목록과 없는 목록 | 🟢 지원함 |
+| Inline Code   | \`코드 스타일\` 지원         | 🟢 지원함 |
+| Code Blocks   | 코드 블록 표현              | 🟢 지원함 |
+
+---
+
+### 체크리스트
+
+- [x] 이 항목은 완료됨
+- [ ] 이 항목은 아직 미완료
+
+---
+
+### 수평선
+위에 내용과 아래 내용을 구분하기 위한 수평선입니다.
+
+---
+
+  `;
 
   return (
     <div className={styles.post_container}>
@@ -60,7 +145,7 @@ const page = () => {
               </tr>
             </tbody>
           </table>
-          < CopyLinkButton />
+          <CopyLinkButton />
         </div>
 
         {/* 목차 섹션: 포스트 내부의 헤딩 목록을 보여줌 */}
@@ -86,9 +171,14 @@ const page = () => {
         </div>
 
         {/* 아티클 내용: 마크다운으로 작성된 본문이 렌더링될 영역 */}
-        <article className={styles.article_content}>
+        <article
+          className={styles.article_content}
+          dangerouslySetInnerHTML={{ __html: md.render(dummyMarkdown) }}
+        >
           {/* 더미 마크다운 문서 렌더링 */}
         </article>
+        {/* 좋아요 버튼 섹션 */}
+        <LikeButton />
       </div>
 
       {/* 댓글 섹션 */}
