@@ -23,6 +23,7 @@ export const fetchApi = async (endpoint, options = {}) => {
   }
 };
 
+// 로그인
 export const authApi = {
   login: async (id, password) => {
     return fetchApi('/api/auth/login', {
