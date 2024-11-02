@@ -1,15 +1,15 @@
 'use client';
 
 import styles from './page.module.css';
-import { useState } from 'react';
+import { useState } from 'react';  
 import Navigation from './components/navigation';
-import { PostCardsList } from './components/PostCard/PostCard';
 import Footer from './components/Footer';
 import { MainPostList } from './components/MainPostCard/MainPostCard';
+import { PostCardsList } from './components/PostCard/PostCard';
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 10; // 총 페이지 수
+  const totalPages = 10;
 
   // 페이지네이션 렌더링 함수
   const renderPagination = () => {
@@ -85,8 +85,7 @@ export default function Home() {
 
   return (
     <div className={styles.main}>
-      {/* 네비게이션 /> */}
-      <Navigation></Navigation>
+      <Navigation />
 
       <div className="container">
         {/* 히어로 섹션 */}
@@ -96,19 +95,18 @@ export default function Home() {
             <span>거북목</span>의 하루
           </h2>
           <p className={styles.description}>
-            거북목 팀의 블로그에 오신것을 환영합니다.<br></br>
-            지금까지 보지못한 멋진 기술 블로그를 구현할<br></br>수 있다는 것을
+            거북목 팀의 블로그에 오신것을 환영합니다.<br />
+            지금까지 보지못한 멋진 기술 블로그를 구현할<br />수 있다는 것을
             보여드리겠습니다
           </p>
         </div>
 
-        {/* 메인 포스트 */}
+        {/* 메인 포스트 섹션 */}
         <div className={styles.main_post_section}>
           <div className={styles.main_post_header}>
             <div className={styles.main_post_title}>/main post</div>
           </div>
           <div className={styles.main_post_box}>
-            {/* <메인 포스트 영역 */}
             <MainPostList />
           </div>
         </div>
@@ -120,7 +118,6 @@ export default function Home() {
             <div className={styles.filterHeader}>
               <h2 className={styles.filterTitle}>/Filter</h2>
             </div>
-
             <div className={styles.filterBox}></div>
           </aside>
 
@@ -132,13 +129,12 @@ export default function Home() {
             <div className={styles.grid}>
               {[...Array(6)].map((_, index) => (
                 <div key={index} className={styles.placeholder}>
-                  {/* 카드 컴포넌트 영역 */}
                   <PostCardsList></PostCardsList>
                 </div>
               ))}
             </div>
 
-            {/* 페이지네이션 추가 */}
+            {/* 페이지네이션 */}
             <div className={styles.pagination}>{renderPagination()}</div>
           </section>
         </div>
