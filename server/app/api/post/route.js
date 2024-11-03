@@ -5,14 +5,28 @@ import Category from "@/app/db/models/category";
 import Like from "@/app/db/models/like";
 import Comment from "@/app/db/models/comment";
 
-export async function GET() {
+export async function GET(request) {
   await dbConnect();
 
   try {
-    const posts = await Post.find()
+    // URL에서 searchParams 가져오기
+    const { searchParams } = new URL(request.url);
+    // limit 값이 없으면 null 반환 (전체 게시글 조회)
+    const limit = parseInt(searchParams.get('limit')) || null;
+
+    let query = Post.find()
+      .sort({ createdAt: -1 }) // 최신순 정렬
       .populate("categoryId", "name")
       .populate("likes")
-      .populate("comments"); // 카테고리의 이름 정보 포함
+      .populate("comments");
+
+    // limit이 있는 경우에만 적용
+    if (limit && limit > 0) {
+      query = query.limit(limit);
+    }
+
+    // 쿼리 실행
+    const posts = await query;
 
     return NextResponse.json(posts);
   } catch (error) {
@@ -34,7 +48,7 @@ export async function POST(req) {
       content,
       mainImage,
       categoryId,
-      tags, // 태그 ID 배열 사용
+      tags,  // 태그 ID 배열 사용
     });
     return NextResponse.json(newPost);
   } catch (error) {
