@@ -1,20 +1,21 @@
 // client/src/app/post/[id]/page.jsx
 
-"use client";
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation"; // URL에서 ID 가져오기
-import { postApi } from "@/utils/api";
-import MarkdownIt from "markdown-it";
-import styles from "./post.module.scss";
-import CopyLinkButton from "../components/CopyLinkButton";
-import LikeButton from "../components/LikeButton";
-import Navigation from "@/app/components/navigation";
+'use client';
+import { useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation'; // URL에서 ID 가져오기
+import { postApi } from '@/utils/api';
+import MarkdownIt from 'markdown-it';
+import styles from './post.module.scss';
+import CopyLinkButton from '../components/CopyLinkButton';
+import LikeButton from '../components/LikeButton';
+import Navigation from '@/app/components/navigation';
 
 const md = new MarkdownIt();
 
 export default function PostDetail() {
   const [post, setPost] = useState(null);
   const [error, setError] = useState(null);
+  const [isLikedByUser, setIsLikedByUser] = useState(false);
   const params = useParams(); // 현재 URL의 params 사용하여 post ID 가져오기
   const router = useRouter();
 
@@ -23,9 +24,10 @@ export default function PostDetail() {
       try {
         const data = await postApi.getPost(params.id); // 특정 게시글 조회 API 호출
         setPost(data);
+        setIsLikedByUser(data.isLikedByUser); // 서버에서 받은 사용자의 좋아요 상태
       } catch (error) {
-        console.error("게시글을 불러오는데 실패했습니다:", error);
-        setError("게시글을 불러오는데 실패했습니다.");
+        console.error('게시글을 불러오는데 실패했습니다:', error);
+        setError('게시글을 불러오는데 실패했습니다.');
         router.push('/not-found'); // not-found.js 페이지로 이동
       }
     };
@@ -41,9 +43,6 @@ export default function PostDetail() {
     <div className={styles.post_container}>
       <header className={styles.header_section}>
         <Navigation />
-        <button className={styles.btn_back} onClick={() => window.history.back()}>
-          <span className={styles.materialIcon}>arrow_back</span>
-        </button>
         <h1 className={styles.post_title}>{post.title}</h1>
       </header>
 
@@ -54,7 +53,9 @@ export default function PostDetail() {
             <tbody>
               <tr>
                 <th className={styles.metadata_label}>DATE</th>
-                <td className={styles.metadata_value}>{post.createdAt.slice(0,10)}</td>
+                <td className={styles.metadata_value}>
+                  {post.createdAt.slice(0, 10)}
+                </td>
               </tr>
               <tr>
                 <th className={styles.metadata_label}>CATEGORY</th>
@@ -63,7 +64,7 @@ export default function PostDetail() {
               <tr>
                 <th className={styles.metadata_label}>TAGS</th>
                 <td className={styles.metadata_value}>
-                  {post.tags && post.tags.join(", ")}
+                  {post.tags && post.tags.join(', ')}
                 </td>
               </tr>
             </tbody>
@@ -83,7 +84,12 @@ export default function PostDetail() {
         <article className={styles.article_content}>
           <div dangerouslySetInnerHTML={{ __html: md.render(post.content) }} />
         </article>
-        <LikeButton />
+        <LikeButton
+          postId={params.id}
+          initialLikeCount={post.likes.length}
+          initialIsLiked={post.isLikedByUser}
+          LikesArray={post.likes}
+        />
       </div>
     </div>
   );
