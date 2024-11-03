@@ -34,12 +34,20 @@ export const authApi = {
   },
 };
 
+//카테고리 리스즈
+export const categoryApi = {
+  getCategories: async () => {
+    return fetchApi('/api/category', {
+      method: 'GET',
+    });
+  },
+};
+
 export const postApi = {
-  
   // 최신 게시글 조회
   getRecentPosts: async (limit = 2) => {
-  // 서버에 limit 개수만큼의 최신 게시글 요청
-  // 예: /api/post?limit=2 는 2개의 게시글 요청
+    // 서버에 limit 개수만큼의 최신 게시글 요청
+    // 예: /api/post?limit=2 는 2개의 게시글 요청
     return fetchApi(`/api/post?limit=${limit}`);
   },
 
