@@ -1,7 +1,7 @@
 import styles from './navigation.module.scss';
 import Link from 'next/link';
 import { Inconsolata } from 'next/font/google';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 
 const inconsolata = Inconsolata({
   subsets: ['latin'],
@@ -10,6 +10,11 @@ const inconsolata = Inconsolata({
 
 export default function Navigation() {
   const { data: session } = useSession();
+  
+// 로그아웃 완료 후 홈페이지로 이동
+  const handleLogout = async () => {
+    await signOut({ redirect: true, callbackUrl: '/' });
+  };
 
   return (
     <nav className={styles.nav}>
@@ -28,7 +33,12 @@ export default function Navigation() {
               <>
                 <Link href="/post" className={`${styles.menuItem} ${inconsolata.className}`}>[P] POSTING</Link>
                 <Link href="/setting" className={`${styles.menuItem} ${inconsolata.className}`}>[S] SETTING</Link>
-                <Link href="/" className={`${styles.menuItem} ${inconsolata.className}`}>[L] LOGOUT</Link>
+                <button 
+                  onClick={handleLogout}
+                  className={`${styles.menuItem} ${inconsolata.className} ${styles.logout_button}`}
+                >
+                  [L] LOGOUT
+                </button>
               </>
             ) : (
               // 로그인되지 않은 상태
