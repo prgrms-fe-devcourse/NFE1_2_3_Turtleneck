@@ -1,0 +1,144 @@
+.HR1 {
+  margin: 30px 0 25px 0;
+}
+
+.HR2 {
+  border: 0;
+  height: 1px;
+  background: #e0e0e0;
+  margin-bottom: 7px;
+}
+
+/* Desktop (1280px) */
+.container {
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 100vh;
+}
+
+.header {
+  display: flex;
+  height: 65px;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  button {
+    border-radius: 20px;
+    border: 1px solid #000000;
+    display: flex;
+    justify-content: center;
+    padding: 6px 13px;
+    font-size: 14px;
+    font-weight: 600;
+    background-color: white;
+    width: 72px;
+  }
+}
+
+.info_wrap {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  font-family: pretendard;
+  margin-top: 30px;
+
+  .select {
+    height: 27px;
+    -o-appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    padding: 6px 3px 5px 30px;
+    background: url('/images/selectArrow.png') no-repeat 3% 50%;
+    width: 150px;
+    margin-bottom: 30px;
+  }
+  .title_wrap {
+    display: flex;
+    font-size: 19px;
+    font-weight: 300;
+    .title {
+      margin-left: 13px;
+      font-size: 42px;
+      font-family: pretendard;
+      font-weight: 500;
+      border: none;
+      scrollbar-width: none;
+      resize: none;
+      outline: none;
+      line-height: 1.2;
+      height: auto;
+
+      &:invalid {
+        border: 2px dashed red;
+      }
+    }
+  }
+
+  .tag_wrap {
+    width: 100%;
+    margin-bottom: 10px;
+
+    .tag_title {
+      border: 1px dotted black;
+      padding: 2px 4px;
+      border-radius: 2px;
+      font-weight: 500;
+      font-size: 14px;
+      margin-right: 9px;
+    }
+
+    .tag_list {
+      font-size: 14px;
+    }
+    .tag_input_wrap {
+      margin-top: 13px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    .tag_input {
+      border: none;
+      outline: none;
+      display: flex;
+      flex: 1;
+    }
+
+    button {
+      padding: 2px 5px;
+      font-family: pretendard;
+    }
+  }
+}
+
+.img_select {
+  margin-bottom: 10px;
+
+  .input_title {
+    font-size: 14px;
+    font-weight: 500;
+  }
+  input[type='file']::file-selector-button {
+    padding: 0;
+    width: 70px;
+    height: 26px;
+    font-size: 12px;
+    background: #fff;
+    border: 1px solid rgb(77, 77, 77);
+    border-radius: 2px;
+    margin-left: 10px;
+    cursor: pointer;
+
+    &:hover {
+      background: rgb(77, 77, 77);
+      color: #fff;
+    }
+  }
+}
+
+.editor {
+  height: calc(100vh - 390px);
+}
