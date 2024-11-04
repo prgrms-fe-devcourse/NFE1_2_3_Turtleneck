@@ -22,7 +22,7 @@
         '. comments';
     grid-template-columns: 1fr 3fr;
     gap: 0 40px;
-    padding: 0 80px;
+    margin: 0 auto;
     list-style-position: inside;
     font-family: Pretendard;
 }
@@ -33,6 +33,7 @@
 }
 
 .post_title {
+    margin-top: 16px;
     font-size: 96px;
     font-weight: 500;
     line-height: 85%;
@@ -115,6 +116,15 @@
     display: flex;
     align-items: flex-start;
     gap: 8px;
+}
+
+
+
+.article_content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
 }
 
 .btn_edit,
