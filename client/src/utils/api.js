@@ -56,6 +56,8 @@ export const authApi = {
 export const postApi = {
   // 최신 게시글 조회
   getRecentPosts: async (limit = 2) => {
+    // 서버에 limit 개수만큼의 최신 게시글 요청
+    // 예: /api/post?limit=2 는 2개의 게시글 요청
     return fetchApi(`/api/post?limit=${limit}`);
   },
 
@@ -95,6 +97,34 @@ export const postApi = {
     return fetchApi(`/api/post/${postId}`, {
       method: 'PATCH',
       body: JSON.stringify(updateData),
+    });
+  },
+
+  updatePost: async ({
+    postId,
+    categoryId,
+    title,
+    tags,
+    content,
+    mainImage,
+  }) => {
+    const formData = new FormData();
+    formData.append('categoryId', categoryId);
+    formData.append('title', title);
+    tags.forEach((tag) => formData.append('tags', tag));
+    formData.append('content', content);
+    formData.append('file', mainImage);
+    if (mainImage) {
+      formData.append('mainImage', mainImage);
+    }
+
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
+    return fetchApimulti(`/api/post/${postId}`, {
+      method: 'PATCH',
+      body: formData, // FormData 사용
     });
   },
 
@@ -152,7 +182,6 @@ export const commentApi = {
     return fetchApi(`/api/comment/${postId}`);
   },
 
-  // 댓글 수정
   updateComment: async (commentId, { content, password }) => {
     return fetchApi(`/api/comment/${commentId}`, {
       method: 'PATCH',
@@ -163,7 +192,6 @@ export const commentApi = {
     });
   },
 
-  // 댓글 삭제
   deleteComment: async (commentId, password, isAdmin = false) => {
     return fetchApi(`/api/comment/${commentId}`, {
       method: 'DELETE',

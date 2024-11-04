@@ -48,6 +48,11 @@ export default function PostDetail() {
     fetchPost();
   }, [params.id, router]);
 
+  //edit버튼 이동기능
+  const editPush = (e) => {
+    router.push(`http://localhost:3000/edit/${params.id}`);
+  };
+
   if (error) return <div>{error}</div>;
   if (!post) return <div>로딩중...</div>;
 
