@@ -5,12 +5,21 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation'; // URL에서 ID 가져오기
 import { postApi } from '@/utils/api';
 import MarkdownIt from 'markdown-it';
+import hljs from 'highlight.js/lib/core';
+import mdHighlightjs from 'markdown-it-highlightjs';
+import 'highlight.js/styles/github.css';
 import styles from './post.module.scss';
 import CopyLinkButton from '../components/CopyLinkButton';
 import LikeButton from '../components/LikeButton';
 import Navigation from '@/app/components/navigation';
 
+// 필요한 언어 등록 (예: JavaScript, Python 등)
+hljs.registerLanguage('javascript', require('highlight.js/lib/languages/javascript'));
+hljs.registerLanguage('python', require('highlight.js/lib/languages/python'));
+
+// MarkdownIt 인스턴스 생성 및 하이라이팅 플러그인 설정
 const md = new MarkdownIt();
+md.use(mdHighlightjs, { auto: true, hljs }); // auto 옵션을 통해 언어 자동 감지
 
 export default function PostDetail() {
   const [post, setPost] = useState(null);
@@ -32,7 +41,7 @@ export default function PostDetail() {
       }
     };
     fetchPost();
-  }, [params.id]);
+  }, [params.id, router]);
 
   if (error) return <div>{error}</div>;
   if (!post) return <div>로딩중...</div>;
