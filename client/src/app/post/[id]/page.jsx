@@ -9,6 +9,7 @@ import styles from './post.module.scss';
 import CopyLinkButton from '../components/CopyLinkButton';
 import LikeButton from '../components/LikeButton';
 import Navigation from '@/app/components/navigation';
+import Comments from '../components/comments';
 
 const md = new MarkdownIt();
 
@@ -90,6 +91,9 @@ export default function PostDetail() {
           initialIsLiked={post.isLikedByUser}
           LikesArray={post.likes}
         />
+        <div className={styles.comments_section}>
+          <Comments postId={params.id} />
+        </div>
       </div>
     </div>
   );
