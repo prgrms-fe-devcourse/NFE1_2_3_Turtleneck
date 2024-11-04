@@ -1,0 +1,94 @@
+.filter_container {
+    display: flex;
+    gap: 20px;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 400; /* Regular */
+  }
+  
+  .filter_section {
+    width: 190px;
+    margin-bottom: 24px;
+    padding: 12px;
+    background-color: #ffffff;
+    border-radius: 8px;
+  }
+  
+  .filter_header {
+    height: 30px;
+    border-bottom: 1px solid black;
+    font-size: 16px;
+    font-weight: 600;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  
+  .folder_icon {
+    margin-right: 8px;
+    font-size: 20px;
+    vertical-align: middle;
+  }
+  
+  .filter_content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .filter_item {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 28px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #4b5563;
+    transition: all 0.2s ease;
+  
+    // 체크된 아이템 텍스트 스타일링
+    &.selected, 
+    input:checked ~ span:last-child {
+      background-color: #2ed3b7;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+  }
+  
+  .checkbox {
+    position: absolute;
+    opacity: 0;
+    height: 0;
+    width: 0;
+  }
+  
+  .checkbox_custom {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    height: 16px;
+    width: 16px;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+  }
+  
+  .checkbox:checked ~ .checkbox_custom {
+    background-color: #2ed3b7;
+    border-color: #2ed3b7;
+  
+    &:after {
+      content: "";
+      position: absolute;
+      display: block;
+      left: 5px;
+      top: 2px;
+      width: 3px;
+      height: 8px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  }

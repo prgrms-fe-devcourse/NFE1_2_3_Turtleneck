@@ -1,15 +1,67 @@
 'use client';
 
 import styles from './page.module.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navigation from './components/navigation';
 import Footer from './components/Footer';
 import { MainPostList } from './components/MainPostCard/MainPostCard';
-import PostCardsList from './components/PostCard/PostCard';
+import PostCard from './components/PostCard/PostCard';
+import Filter from './components/Filter/Filter';
+import { postApi } from '@/utils/api';
 
 export default function Home() {
+  const [posts, setPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 10;
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await postApi.getAllPosts();
+        const postsData = Array.isArray(response) ? response : [];
+        setPosts(postsData);
+        setFilteredPosts(postsData);
+      } catch (err) {
+        console.error('Error fetching posts:', err);
+        setError('게시물을 불러오는데 실패했습니다.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+  
+  const handleFilterChange = ({ categoryId, tags }) => {
+    let filtered = [...posts];
+  
+    // 카테고리 필터링
+    if (categoryId) {
+      filtered = filtered.filter(post => {
+        // categoryId가 객체인 경우 name으로 비교
+        if (post.categoryId && typeof post.categoryId === 'object') {
+          return post.categoryId.name === categoryId;
+        }
+        // categoryId가 문자열인 경우 직접 비교
+        return post.categoryId === categoryId;
+      });
+    }
+  
+    // 태그 필터링
+    if (tags && tags.length > 0) {
+      filtered = filtered.filter(post => {
+        // post.tags가 없는 경우 false 반환
+        if (!post.tags) return false;
+        // 선택된 태그 중 하나라도 포함되어 있으면 true
+        return tags.some(selectedTag => post.tags.includes(selectedTag));
+      });
+    }
+  
+    setFilteredPosts(filtered);
+  };
 
   // 페이지네이션 렌더링 함수
   const renderPagination = () => {
@@ -34,14 +86,14 @@ export default function Home() {
           className={`${styles.pageButton} ${currentPage === 1 ? styles.active : ''}`}
         >
           1
-        </button>,
+        </button>
       );
 
       if (displayPages[0] > 2) {
         pages.push(
           <span key="ellipsis1" className={styles.ellipsis}>
             ...
-          </span>,
+          </span>
         );
       }
     }
@@ -55,7 +107,7 @@ export default function Home() {
           className={`${styles.pageButton} ${currentPage === pageNum ? styles.active : ''}`}
         >
           {pageNum}
-        </button>,
+        </button>
       );
     });
 
@@ -65,7 +117,7 @@ export default function Home() {
         pages.push(
           <span key="ellipsis2" className={styles.ellipsis}>
             ...
-          </span>,
+          </span>
         );
       }
 
@@ -76,7 +128,7 @@ export default function Home() {
           className={`${styles.pageButton} ${currentPage === totalPages ? styles.active : ''}`}
         >
           {totalPages}
-        </button>,
+        </button>
       );
     }
 
@@ -119,7 +171,9 @@ export default function Home() {
             <div className={styles.filterHeader}>
               <h2 className={styles.filterTitle}>/Filter</h2>
             </div>
-            <div className={styles.filterBox}></div>
+            <div className={styles.filterBox}>
+              <Filter onFilterChange={handleFilterChange} />
+            </div>
           </aside>
 
           {/* 피드 섹션 */}
@@ -127,9 +181,27 @@ export default function Home() {
             <div className={styles.feedHeader}>
               <h2 className={styles.feedTitle}>/Feed</h2>
             </div>
-            <div className={styles.grid}>
-              <PostCardsList />
-            </div>
+            {loading ? (
+              <div className={styles.loading}>Loading...</div>
+            ) : error ? (
+              <div className={styles.error}>{error}</div>
+            ) : !filteredPosts.length ? (
+              <div className={styles.no_posts}>게시물이 없습니다.</div>
+            ) : (
+              <div className={styles.grid}>
+                {filteredPosts.map((post) => (
+                  <PostCard
+                    key={post._id}
+                    postId={post._id}
+                    category={post.categoryId?.name || 'Uncategorized'}
+                    date={new Date(post.createdAt).toLocaleDateString()}
+                    image={post.mainImage}
+                    title={post.title}
+                    tags={post.tags || []}
+                  />
+                ))}
+              </div>
+            )}
 
             {/* 페이지네이션 */}
             <div className={styles.pagination}>{renderPagination()}</div>
