@@ -126,6 +126,9 @@ export default function PostDetail() {
           initialIsLiked={post.isLikedByUser}
           LikesArray={post.likes}
         />
+        <div className={styles.comments_section}>
+          <Comments postId={params.id} />
+        </div>
       </div>
     </div>
   );
