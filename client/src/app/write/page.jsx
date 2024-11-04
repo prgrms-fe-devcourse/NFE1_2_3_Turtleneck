@@ -61,6 +61,7 @@ export default function write() {
   };
 
   function handleEditorChange({ html, text }) {
+    console.log('handleEditorChange', html, text);
     setFormTag(tagsData);
     setTextData(text);
     setFormText(textData);
@@ -82,10 +83,28 @@ export default function write() {
     }
   };
 
+  //이미지 추가기능
+  function onImageUpload(file) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (data) => {
+        resolve(data.target.result);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
   const handleFileChange = (e) => {
     const file = e.target.files?.[0] || null;
     if (file) {
-      setImage(file); // 파일 객체를 상태에 설정
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setImage(reader.result);
+      };
+
+      reader.readAsDataURL(file);
+      // 파일 객체를 상태에 설정
     } else {
       setImage(null); // 파일이 없을 경우 상태 초기화
     }
@@ -219,6 +238,7 @@ export default function write() {
               <MdEditor
                 className={styles.editor}
                 renderHTML={(text) => mdParser.render(text)}
+                onImageUpload={onImageUpload}
                 onChange={handleEditorChange}
               />
             </div>
