@@ -23,6 +23,24 @@ export const fetchApi = async (endpoint, options = {}) => {
     throw error;
   }
 };
+export const fetchApimulti = async (endpoint, options = {}) => {
+  try {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      ...options,
+      credentials: 'include',
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || '요청 처리 중 오류가 발생했습니다');
+    }
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
 
 // 로그인
 export const authApi = {
@@ -34,7 +52,7 @@ export const authApi = {
   },
 };
 
-//카테고리 리스즈
+//카테고리 리스트
 export const categoryApi = {
   getCategories: async () => {
     return fetchApi('/api/category', {
@@ -57,16 +75,24 @@ export const postApi = {
   },
 
   // 새 게시글 작성
-  createPost: async ({ title, content, mainImage, categoryId, tags }) => {
-    return fetchApi('/api/post', {
+  createPost: async ({ categoryId, title, tags, content, mainImage }) => {
+    const formData = new FormData();
+    formData.append('categoryId', categoryId);
+    formData.append('title', title);
+    tags.forEach((tag) => formData.append('tags', tag));
+    formData.append('content', content);
+    formData.append('file', mainImage);
+    if (mainImage) {
+      formData.append('mainImage', mainImage);
+    }
+
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
+    return fetchApimulti('/api/post', {
       method: 'POST',
-      body: JSON.stringify({
-        title,
-        content,
-        mainImage,
-        categoryId,
-        tags,
-      }),
+      body: formData, // FormData 사용
     });
   },
 

@@ -6,16 +6,18 @@ import Image from 'next/image';
 import MdEditor from 'react-markdown-editor-lite';
 import { useRef, useState, useEffect } from 'react';
 import './editor.css';
-import axios from 'axios';
-import { categoryApi } from '@/utils/api';
+import { categoryApi, postApi } from '@/utils/api';
+import { useRouter } from 'next/navigation';
 
 export default function write() {
   const mdParser = new MarkdownIt(/* Markdown-it options */);
+  const router = useRouter();
 
   //FORM DATA BASE
   const [Selected, setSelected] = useState('');
   const [titleData, setTitleData] = useState('');
-  const [tagData, setTagData] = useState('');
+  const [tag, setTag] = useState('');
+  const [tagsData, setTagsData] = useState([]);
   const [textData, setTextData] = useState('');
   const [image, setImage] = useState(null);
 
@@ -55,18 +57,29 @@ export default function write() {
   const titleHandler = (e) => {
     const newTitle = e.currentTarget.value;
     setTitleData(newTitle); // 상태 업데이트
-    setFormTitle(titleData); // 보낼값
+    setFormTitle(titleData);
   };
 
   function handleEditorChange({ html, text }) {
+    setFormTag(tagsData);
     setTextData(text);
-    setFormText(textData); // 보낼값
+    setFormText(textData);
   }
 
   const tagHandler = (e) => {
     const newTag = e.currentTarget.value;
-    setTagData(newTag); // 상태 업데이트
-    setFormTag(tagData); // 보낼값
+    setTag(newTag); // 입력한 tag를 tag에 저장
+  };
+
+  //tag추가 기능
+  const tagsHandle = (e) => {
+    e.preventDefault();
+
+    if (tag.trim()) {
+      // 빈 태그를 추가하지 않도록 체크
+      setTagsData((prevList) => [...prevList, tag]);
+      setTag(''); // 입력 필드를 비우기
+    }
   };
 
   const handleFileChange = (e) => {
@@ -82,30 +95,23 @@ export default function write() {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
 
+    setFormTag(tagsData);
+
     if (!formTitle.trim()) {
       alert('내용을 입력하세요.');
       return;
     }
-
-    const formData = new FormData();
-    formData.append('title', formTitle);
-    formData.append('content', formText);
-    formData.append('categoryId', Selected);
-    formData.append('tags', formTag);
-    if (image) {
-      formData.append('mainImage', image); // 이미지 파일 추가
-    }
-
     try {
-      const res = await axios.post(`/api/post`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+      const response = await postApi.createPost({
+        categoryId: Selected,
+        title: formTitle,
+        tags: formTag, // 태그 배열
+        content: formText,
+        mainImage: image, // 이미지 파일
       });
 
-      console.log(res);
       // 성공적으로 추가된 경우 리다이렉트
-      NextResponse.redirect(`/`, 302);
+      router.push('http://localhost:3000/');
     } catch (error) {
       console.error('Error posting:', error);
       alert('게시글 작성 실패'); // 사용자에게 에러 알림
@@ -116,7 +122,12 @@ export default function write() {
     <>
       <div className={styles.container}>
         <div className={styles.content}>
-          <form className="" action="" onSubmit={onSubmitHandler}>
+          <form
+            className=""
+            action=""
+            onSubmit={onSubmitHandler}
+            encType="multipart/form-data"
+          >
             <div>
               <div className={styles.header}>
                 <Image
@@ -125,7 +136,9 @@ export default function write() {
                   height={34}
                   alt="deco global img"
                 />
-                <button className="submit_button">글쓰기</button>
+                <button className="submit_button" type="submit">
+                  글쓰기
+                </button>
               </div>
 
               <div className={styles.info_wrap}>
@@ -161,7 +174,26 @@ export default function write() {
                   ></textarea>
                 </div>
 
-                <hr className={styles.HR} />
+                <hr className={styles.HR1} />
+
+                <div className={styles.tag_wrap}>
+                  <span className={styles.tag_title}>태그</span>
+                  <span className={styles.tag_list}>{tagsData.join(', ')}</span>
+                  <div className={styles.tag_input_wrap}>
+                    <input
+                      className={styles.tag_input}
+                      type="text"
+                      placeholder="태그입력 후 태그추가 버튼 클릭"
+                      onChange={tagHandler}
+                      value={tag}
+                    ></input>
+                    <button type="button" onClick={tagsHandle}>
+                      태그추가
+                    </button>
+                  </div>
+                </div>
+
+                <hr className={styles.HR2} />
 
                 <div className={styles.img_select}>
                   <span className={styles.input_title}>대표이미지</span>
@@ -175,16 +207,6 @@ export default function write() {
                       id="file"
                     />
                   </label>
-                </div>
-
-                <div className={styles.tag_wrap}>
-                  <span className={styles.tag_title}>태그</span>
-                  <input
-                    className={styles.tag_input}
-                    type="text"
-                    placeholder="태그를 입력하세요"
-                    onChange={tagHandler}
-                  ></input>
                 </div>
               </div>
 

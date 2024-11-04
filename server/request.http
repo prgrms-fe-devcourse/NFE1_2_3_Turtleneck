@@ -30,7 +30,7 @@ Content-Type: application/json
 
 
 POST http://localhost:3005/api/post
-Content-Type: application/json
+Content-Type: multipart/form-data
 
 {
   "title" : "테스트",
