@@ -12,6 +12,7 @@ import styles from './post.module.scss';
 import CopyLinkButton from '../components/CopyLinkButton';
 import LikeButton from '../components/LikeButton';
 import Navigation from '@/app/components/navigation';
+import { useSession } from 'next-auth/react';
 
 // 필요한 언어 등록 (예: JavaScript, Python 등)
 hljs.registerLanguage(
@@ -30,6 +31,7 @@ export default function PostDetail() {
   const [isLikedByUser, setIsLikedByUser] = useState(false);
   const params = useParams(); // 현재 URL의 params 사용하여 post ID 가져오기
   const router = useRouter();
+  const { data: session } = useSession();
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -104,14 +106,16 @@ export default function PostDetail() {
       <div className={styles.article_section}>
         <div className={styles.article_header}>
           <div className={styles.section_name}>/ ARTICLE</div>
-          <div className={styles.article_btns}>
-            <button className={styles.btn_edit} onClick={handleEdit}>
-              EDIT
-            </button>
-            <button className={styles.btn_delete} onClick={handleDelete}>
-              DELETE
-            </button>
-          </div>
+          {session && ( // 로그인된 경우에만 EDIT 및 DELETE 버튼 표시
+            <div className={styles.article_btns}>
+              <button className={styles.btn_edit} onClick={handleEdit}>
+                EDIT
+              </button>
+              <button className={styles.btn_delete} onClick={handleDelete}>
+                DELETE
+              </button>
+            </div>
+          )}
         </div>
         <article className={styles.article_content}>
           <div dangerouslySetInnerHTML={{ __html: md.render(post.content) }} />
