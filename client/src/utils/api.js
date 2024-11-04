@@ -1,4 +1,3 @@
-// api.js
 const BASE_URL = 'http://localhost:3005';
 
 export const fetchApi = async (endpoint, options = {}) => {
@@ -107,7 +106,7 @@ export const commentApi = {
           postId,
           content,
           isAdmin: true,
-          nickname, // 세션에서 가져온 관리자 닉네임
+          nickname,
         }
       : {
           postId,
@@ -128,7 +127,6 @@ export const commentApi = {
     return fetchApi(`/api/comment/${postId}`);
   },
 
-  // 나머지는 그대로 유지
   updateComment: async (commentId, { content, password }) => {
     return fetchApi(`/api/comment/${commentId}`, {
       method: 'PATCH',
@@ -139,27 +137,28 @@ export const commentApi = {
     });
   },
 
-  deleteComment: async (commentId, password) => {
+  deleteComment: async (commentId, password, isAdmin = false) => {
     return fetchApi(`/api/comment/${commentId}`, {
       method: 'DELETE',
-      body: JSON.stringify({ password }),
+      body: JSON.stringify({ password, isAdmin }),
     });
   },
 };
 
 export const categoryApi = {
-  // 기존 카테고리 목록 조회 유지
+  // 카테고리 목록 조회
   getCategories: async () => {
     return fetchApi('/api/category', {
       method: 'GET',
     });
   },
 
-  // 특정 카테고리 조회
+  // 특정 카테고리 조회 (게시글, 태그 정보 포함)
   getCategory: async (categoryId) => {
     return fetchApi(`/api/category/${categoryId}`, {
       method: 'GET',
     });
+    // 반환값: { category: {...}, posts: [...], tags: [...] }
   },
 
   // 새 카테고리 생성 (전체 목록 반환)
