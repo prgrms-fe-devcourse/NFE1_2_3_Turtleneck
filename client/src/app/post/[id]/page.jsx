@@ -34,6 +34,11 @@ export default function PostDetail() {
     fetchPost();
   }, [params.id]);
 
+  //edit버튼 이동기능
+  const editPush = (e) => {
+    router.push(`http://localhost:3000/edit/${params.id}`);
+  };
+
   if (error) return <div>{error}</div>;
   if (!post) return <div>로딩중...</div>;
 
@@ -77,7 +82,9 @@ export default function PostDetail() {
         <div className={styles.article_header}>
           <div className={styles.section_name}>/ ARTICLE</div>
           <div className={styles.article_btns}>
-            <button className={styles.btn_edit}>EDIT</button>
+            <button className={styles.btn_edit} onClick={editPush}>
+              EDIT
+            </button>
             <button className={styles.btn_delete}>DELETE</button>
           </div>
         </div>

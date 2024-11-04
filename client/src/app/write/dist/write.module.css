@@ -61,6 +61,7 @@
   font-weight: 300;
 }
 .info_wrap .title_wrap .title {
+  width: 100%;
   margin-left: 13px;
   font-size: 42px;
   font-family: pretendard;
@@ -131,5 +132,5 @@
 }
 
 .editor {
-  height: calc(100vh - 390px);
+  height: calc(100vh - 400px);
 }

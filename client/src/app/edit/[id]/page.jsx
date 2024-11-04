@@ -1,17 +1,22 @@
 'use client';
 
-import styles from './write.module.scss';
+import styles from './edit.module.scss';
 import MarkdownIt from 'markdown-it';
 import Image from 'next/image';
 import MdEditor from 'react-markdown-editor-lite';
 import { useRef, useState, useEffect } from 'react';
 import './editor.css';
 import { categoryApi, postApi } from '@/utils/api';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 export default function write() {
   const mdParser = new MarkdownIt(/* Markdown-it options */);
+  const params = useParams(); // 현재 URL의 params 사용하여 post ID 가져오기
   const router = useRouter();
+
+  //ORIGIN DATA
+  const postId = params.id;
+  const [originTitle, setOriginTitle] = useState('');
 
   //FORM DATA BASE
   const [Selected, setSelected] = useState('');
@@ -26,23 +31,47 @@ export default function write() {
   const [formTag, setFormTag] = useState('');
   const [formText, setFormText] = useState('');
 
-  //카테고리 가져오기
+  //카테고리와 이전글 데이터 가져오기
   const [categories, setCategories] = useState([]);
-
-  async function getCategory() {
-    try {
-      const res = await categoryApi.getCategories();
-      setCategories(res);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-      alert('카테고리 가져오기 실패'); // 사용자에게 에러 알림
-    }
-  }
+  const [post, setPost] = useState(null);
 
   useEffect(() => {
+    async function getCategory() {
+      try {
+        const res = await categoryApi.getCategories();
+        setCategories(res);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+        alert('카테고리 가져오기 실패'); // 사용자에게 에러 알림
+      }
+    }
+
+    async function fetchPost() {
+      try {
+        const data = await postApi.getPost(params.id); // 특정 게시글 조회 API 호출
+        setPost(data);
+
+        setOriginTitle(data.title);
+        setSelected(data.categoryId._id);
+        setTextData(data.content);
+
+        function setTagsArray() {
+          const tagArray = data.tags;
+          setTagsData(tagArray);
+        }
+
+        setTagsArray();
+      } catch (error) {
+        console.error('게시글을 불러오는데 실패했습니다:', error);
+        setError('게시글을 불러오는데 실패했습니다.');
+        router.push('/not-found'); // not-found.js 페이지로 이동
+      }
+    }
     getCategory();
+    fetchPost();
   }, []);
 
+  console.log('tagsData: ', tagsData);
   //formdata에 따라서 textarea길이변경하기
   const textareaRef = useRef(null);
 
@@ -63,7 +92,7 @@ export default function write() {
   function handleEditorChange({ html, text }) {
     setFormTag(tagsData);
     setTextData(text);
-    setFormText(textData);
+    setFormText(text);
   }
 
   const tagHandler = (e) => {
@@ -102,7 +131,8 @@ export default function write() {
       return;
     }
     try {
-      const response = await postApi.createPost({
+      const response = await postApi.updatePost({
+        postId: params.id,
         categoryId: Selected,
         title: formTitle,
         tags: formTag, // 태그 배열
@@ -111,16 +141,16 @@ export default function write() {
       });
 
       // 성공적으로 추가된 경우 리다이렉트
-      router.push('http://localhost:3000/');
+      router.push(`http://localhost:3000/post/${params.id}`);
     } catch (error) {
-      console.error('Error posting:', error);
+      console.error('Error update:', error);
       alert('게시글 작성 실패'); // 사용자에게 에러 알림
     }
   };
 
   //edit버튼 이동기능
   const goBack = (e) => {
-    router.back();
+    router.push(`http://localhost:3000/post/${params.id}`);
   };
 
   return (
@@ -143,7 +173,7 @@ export default function write() {
                   onClick={goBack}
                 />
                 <button className="submit_button" type="submit">
-                  글쓰기
+                  수정하기
                 </button>
               </div>
 
@@ -173,7 +203,7 @@ export default function write() {
                     id="title"
                     name="title"
                     ref={textareaRef}
-                    value={titleData}
+                    defaultValue={originTitle}
                     maxLength="36"
                     wrap="soft"
                     onChange={titleHandler}
@@ -218,6 +248,7 @@ export default function write() {
 
               <MdEditor
                 className={styles.editor}
+                value={textData}
                 renderHTML={(text) => mdParser.render(text)}
                 onChange={handleEditorChange}
               />

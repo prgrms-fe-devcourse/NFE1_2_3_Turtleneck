@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.adminApi = exports.categoryApi = exports.commentApi = exports.likeApi = exports.postApi = exports.authApi = exports.fetchApimulti = exports.fetchApi = void 0;
 
+var _postApi;
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
@@ -146,7 +148,7 @@ var authApi = {
   }
 };
 exports.authApi = authApi;
-var postApi = {
+var postApi = (_postApi = {
   // 최신 게시글 조회
   getRecentPosts: function getRecentPosts() {
     var limit,
@@ -291,34 +293,109 @@ var postApi = {
         }
       }
     });
-  },
-  // 게시글 삭제
-  deletePost: function deletePost(postId) {
-    return regeneratorRuntime.async(function deletePost$(_context9) {
-      while (1) {
-        switch (_context9.prev = _context9.next) {
-          case 0:
-            return _context9.abrupt("return", fetchApi("/api/post/".concat(postId), {
-              method: 'DELETE'
-            }));
-
-          case 1:
-          case "end":
-            return _context9.stop();
-        }
-      }
-    });
   }
-}; // 좋아요 API
+}, _defineProperty(_postApi, "updatePost", function updatePost(_ref2) {
+  var postId, categoryId, title, tags, content, mainImage, formData, _iteratorNormalCompletion2, _didIteratorError2, _iteratorError2, _iterator2, _step2, _step2$value, key, value;
+
+  return regeneratorRuntime.async(function updatePost$(_context9) {
+    while (1) {
+      switch (_context9.prev = _context9.next) {
+        case 0:
+          postId = _ref2.postId, categoryId = _ref2.categoryId, title = _ref2.title, tags = _ref2.tags, content = _ref2.content, mainImage = _ref2.mainImage;
+          formData = new FormData();
+          formData.append('categoryId', categoryId);
+          formData.append('title', title);
+          tags.forEach(function (tag) {
+            return formData.append('tags', tag);
+          });
+          formData.append('content', content);
+          formData.append('file', mainImage);
+
+          if (mainImage) {
+            formData.append('mainImage', mainImage);
+          }
+
+          _iteratorNormalCompletion2 = true;
+          _didIteratorError2 = false;
+          _iteratorError2 = undefined;
+          _context9.prev = 11;
+
+          for (_iterator2 = formData.entries()[Symbol.iterator](); !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+            _step2$value = _slicedToArray(_step2.value, 2), key = _step2$value[0], value = _step2$value[1];
+            console.log(key, value);
+          }
+
+          _context9.next = 19;
+          break;
+
+        case 15:
+          _context9.prev = 15;
+          _context9.t0 = _context9["catch"](11);
+          _didIteratorError2 = true;
+          _iteratorError2 = _context9.t0;
+
+        case 19:
+          _context9.prev = 19;
+          _context9.prev = 20;
+
+          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+            _iterator2["return"]();
+          }
+
+        case 22:
+          _context9.prev = 22;
+
+          if (!_didIteratorError2) {
+            _context9.next = 25;
+            break;
+          }
+
+          throw _iteratorError2;
+
+        case 25:
+          return _context9.finish(22);
+
+        case 26:
+          return _context9.finish(19);
+
+        case 27:
+          return _context9.abrupt("return", fetchApimulti("/api/post/".concat(postId), {
+            method: 'PATCH',
+            body: formData // FormData 사용
+
+          }));
+
+        case 28:
+        case "end":
+          return _context9.stop();
+      }
+    }
+  }, null, null, [[11, 15, 19, 27], [20,, 22, 26]]);
+}), _defineProperty(_postApi, "deletePost", function deletePost(postId) {
+  return regeneratorRuntime.async(function deletePost$(_context10) {
+    while (1) {
+      switch (_context10.prev = _context10.next) {
+        case 0:
+          return _context10.abrupt("return", fetchApi("/api/post/".concat(postId), {
+            method: 'DELETE'
+          }));
+
+        case 1:
+        case "end":
+          return _context10.stop();
+      }
+    }
+  });
+}), _postApi); // 좋아요 API
 
 exports.postApi = postApi;
 var likeApi = {
   addLike: function addLike(postId) {
-    return regeneratorRuntime.async(function addLike$(_context10) {
+    return regeneratorRuntime.async(function addLike$(_context11) {
       while (1) {
-        switch (_context10.prev = _context10.next) {
+        switch (_context11.prev = _context11.next) {
           case 0:
-            return _context10.abrupt("return", fetchApi('/api/like', {
+            return _context11.abrupt("return", fetchApi('/api/like', {
               method: 'POST',
               body: JSON.stringify({
                 postId: postId
@@ -327,24 +404,24 @@ var likeApi = {
 
           case 1:
           case "end":
-            return _context10.stop();
+            return _context11.stop();
         }
       }
     });
   },
   // 좋아요 삭제
   removeLike: function removeLike(likeId) {
-    return regeneratorRuntime.async(function removeLike$(_context11) {
+    return regeneratorRuntime.async(function removeLike$(_context12) {
       while (1) {
-        switch (_context11.prev = _context11.next) {
+        switch (_context12.prev = _context12.next) {
           case 0:
-            return _context11.abrupt("return", fetchApi("/api/like/".concat(likeId), {
+            return _context12.abrupt("return", fetchApi("/api/like/".concat(likeId), {
               method: 'DELETE'
             }));
 
           case 1:
           case "end":
-            return _context11.stop();
+            return _context12.stop();
         }
       }
     });
@@ -353,13 +430,13 @@ var likeApi = {
 exports.likeApi = likeApi;
 var commentApi = {
   // 댓글 생성
-  createComment: function createComment(_ref2) {
+  createComment: function createComment(_ref3) {
     var postId, content, isAdmin, nickname, password, commentData;
-    return regeneratorRuntime.async(function createComment$(_context12) {
+    return regeneratorRuntime.async(function createComment$(_context13) {
       while (1) {
-        switch (_context12.prev = _context12.next) {
+        switch (_context13.prev = _context13.next) {
           case 0:
-            postId = _ref2.postId, content = _ref2.content, isAdmin = _ref2.isAdmin, nickname = _ref2.nickname, password = _ref2.password;
+            postId = _ref3.postId, content = _ref3.content, isAdmin = _ref3.isAdmin, nickname = _ref3.nickname, password = _ref3.password;
             commentData = isAdmin ? {
               postId: postId,
               content: content,
@@ -372,41 +449,41 @@ var commentApi = {
               nickname: nickname,
               password: password
             };
-            return _context12.abrupt("return", fetchApi("/api/comment/".concat(postId), {
+            return _context13.abrupt("return", fetchApi("/api/comment/".concat(postId), {
               method: 'POST',
               body: JSON.stringify(commentData)
             }));
 
           case 3:
           case "end":
-            return _context12.stop();
+            return _context13.stop();
         }
       }
     });
   },
   // 게시글의 모든 댓글 조회
   getComments: function getComments(postId) {
-    return regeneratorRuntime.async(function getComments$(_context13) {
+    return regeneratorRuntime.async(function getComments$(_context14) {
       while (1) {
-        switch (_context13.prev = _context13.next) {
+        switch (_context14.prev = _context14.next) {
           case 0:
-            return _context13.abrupt("return", fetchApi("/api/comment/".concat(postId)));
+            return _context14.abrupt("return", fetchApi("/api/comment/".concat(postId)));
 
           case 1:
           case "end":
-            return _context13.stop();
+            return _context14.stop();
         }
       }
     });
   },
-  updateComment: function updateComment(commentId, _ref3) {
+  updateComment: function updateComment(commentId, _ref4) {
     var content, password;
-    return regeneratorRuntime.async(function updateComment$(_context14) {
+    return regeneratorRuntime.async(function updateComment$(_context15) {
       while (1) {
-        switch (_context14.prev = _context14.next) {
+        switch (_context15.prev = _context15.next) {
           case 0:
-            content = _ref3.content, password = _ref3.password;
-            return _context14.abrupt("return", fetchApi("/api/comment/".concat(commentId), {
+            content = _ref4.content, password = _ref4.password;
+            return _context15.abrupt("return", fetchApi("/api/comment/".concat(commentId), {
               method: 'PATCH',
               body: JSON.stringify({
                 content: content,
@@ -416,20 +493,20 @@ var commentApi = {
 
           case 2:
           case "end":
-            return _context14.stop();
+            return _context15.stop();
         }
       }
     });
   },
   deleteComment: function deleteComment(commentId, password) {
     var isAdmin,
-        _args15 = arguments;
-    return regeneratorRuntime.async(function deleteComment$(_context15) {
+        _args16 = arguments;
+    return regeneratorRuntime.async(function deleteComment$(_context16) {
       while (1) {
-        switch (_context15.prev = _context15.next) {
+        switch (_context16.prev = _context16.next) {
           case 0:
-            isAdmin = _args15.length > 2 && _args15[2] !== undefined ? _args15[2] : false;
-            return _context15.abrupt("return", fetchApi("/api/comment/".concat(commentId), {
+            isAdmin = _args16.length > 2 && _args16[2] !== undefined ? _args16[2] : false;
+            return _context16.abrupt("return", fetchApi("/api/comment/".concat(commentId), {
               method: 'DELETE',
               body: JSON.stringify({
                 password: password,
@@ -439,7 +516,7 @@ var commentApi = {
 
           case 2:
           case "end":
-            return _context15.stop();
+            return _context16.stop();
         }
       }
     });
@@ -449,28 +526,11 @@ exports.commentApi = commentApi;
 var categoryApi = {
   // 카테고리 목록 조회
   getCategories: function getCategories() {
-    return regeneratorRuntime.async(function getCategories$(_context16) {
-      while (1) {
-        switch (_context16.prev = _context16.next) {
-          case 0:
-            return _context16.abrupt("return", fetchApi('/api/category', {
-              method: 'GET'
-            }));
-
-          case 1:
-          case "end":
-            return _context16.stop();
-        }
-      }
-    });
-  },
-  // 특정 카테고리 조회 (게시글, 태그 정보 포함)
-  getCategory: function getCategory(categoryId) {
-    return regeneratorRuntime.async(function getCategory$(_context17) {
+    return regeneratorRuntime.async(function getCategories$(_context17) {
       while (1) {
         switch (_context17.prev = _context17.next) {
           case 0:
-            return _context17.abrupt("return", fetchApi("/api/category/".concat(categoryId), {
+            return _context17.abrupt("return", fetchApi('/api/category', {
               method: 'GET'
             }));
 
@@ -481,17 +541,14 @@ var categoryApi = {
       }
     });
   },
-  // 새 카테고리 생성 (전체 목록 반환)
-  createCategory: function createCategory(name) {
-    return regeneratorRuntime.async(function createCategory$(_context18) {
+  // 특정 카테고리 조회 (게시글, 태그 정보 포함)
+  getCategory: function getCategory(categoryId) {
+    return regeneratorRuntime.async(function getCategory$(_context18) {
       while (1) {
         switch (_context18.prev = _context18.next) {
           case 0:
-            return _context18.abrupt("return", fetchApi('/api/category', {
-              method: 'POST',
-              body: JSON.stringify({
-                name: name
-              })
+            return _context18.abrupt("return", fetchApi("/api/category/".concat(categoryId), {
+              method: 'GET'
             }));
 
           case 1:
@@ -501,14 +558,14 @@ var categoryApi = {
       }
     });
   },
-  // 카테고리 수정 (전체 목록 반환)
-  updateCategory: function updateCategory(categoryId, name) {
-    return regeneratorRuntime.async(function updateCategory$(_context19) {
+  // 새 카테고리 생성 (전체 목록 반환)
+  createCategory: function createCategory(name) {
+    return regeneratorRuntime.async(function createCategory$(_context19) {
       while (1) {
         switch (_context19.prev = _context19.next) {
           case 0:
-            return _context19.abrupt("return", fetchApi("/api/category/".concat(categoryId), {
-              method: 'PATCH',
+            return _context19.abrupt("return", fetchApi('/api/category', {
+              method: 'POST',
               body: JSON.stringify({
                 name: name
               })
@@ -521,19 +578,39 @@ var categoryApi = {
       }
     });
   },
-  // 카테고리 삭제 (전체 목록 반환)
-  deleteCategory: function deleteCategory(categoryId) {
-    return regeneratorRuntime.async(function deleteCategory$(_context20) {
+  // 카테고리 수정 (전체 목록 반환)
+  updateCategory: function updateCategory(categoryId, name) {
+    return regeneratorRuntime.async(function updateCategory$(_context20) {
       while (1) {
         switch (_context20.prev = _context20.next) {
           case 0:
             return _context20.abrupt("return", fetchApi("/api/category/".concat(categoryId), {
-              method: 'DELETE'
+              method: 'PATCH',
+              body: JSON.stringify({
+                name: name
+              })
             }));
 
           case 1:
           case "end":
             return _context20.stop();
+        }
+      }
+    });
+  },
+  // 카테고리 삭제 (전체 목록 반환)
+  deleteCategory: function deleteCategory(categoryId) {
+    return regeneratorRuntime.async(function deleteCategory$(_context21) {
+      while (1) {
+        switch (_context21.prev = _context21.next) {
+          case 0:
+            return _context21.abrupt("return", fetchApi("/api/category/".concat(categoryId), {
+              method: 'DELETE'
+            }));
+
+          case 1:
+          case "end":
+            return _context21.stop();
         }
       }
     });
