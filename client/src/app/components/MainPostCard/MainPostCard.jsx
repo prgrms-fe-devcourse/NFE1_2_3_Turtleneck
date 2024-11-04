@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import PropTypes from 'prop-types';
 import styles from './MainPostCard.module.scss';
 import { postApi } from '@/utils/api';
@@ -28,9 +29,12 @@ const MainPostCard = ({ post }) => {
           </span>
         </div>
 
-        {/* 게시물 제목과 내용 */}
-        <h2 className={styles.title}>{post?.title}</h2>
-        <p className={styles.description}>{post?.content}</p>
+
+        {/* 포스트 제목과 내용을 눌러 해당 게시글로 이동 */}
+         <Link href={`/post/${post._id}`} className={styles.post_link}>
+          <h2 className={styles.title}>{post?.title}</h2>
+          <p className={styles.description}>{post?.content}</p>
+        </Link>
 
         {/* 태그 목록 */}
         <div className={styles.tags}>
