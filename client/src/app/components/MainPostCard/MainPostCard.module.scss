@@ -88,13 +88,13 @@
     color: #0A2926;
     background: transparent;
     transition: all 0.2s ease;
-    cursor: pointer;
+    // cursor: pointer;
     
-    &:hover {
-      background-color: #2ED3B7;
-      border-color: #2ED3B7;
-      color: white;
-    }
+    // &:hover {
+    //   background-color: #2ED3B7;
+    //   border-color: #2ED3B7;
+    //   color: white;
+    // }
   }
   
   .image_wrapper {
@@ -105,5 +105,21 @@
     .image {
       object-fit: cover;
       border-radius: 4px;
+    }
+  }
+
+  .post_link {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  
+    &:hover {
+      .title {
+        color: #2ED3B7; 
+      }
+      
+      .description {
+        opacity: 0.8;
+      }
     }
   }
