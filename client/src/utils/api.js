@@ -98,3 +98,105 @@ export const likeApi = {
     });
   },
 };
+
+export const commentApi = {
+  // 댓글 생성
+  createComment: async ({ postId, content, isAdmin, nickname, password }) => {
+    const commentData = isAdmin
+      ? {
+          postId,
+          content,
+          isAdmin: true,
+          nickname, // 세션에서 가져온 관리자 닉네임
+        }
+      : {
+          postId,
+          content,
+          isAdmin: false,
+          nickname,
+          password,
+        };
+
+    return fetchApi(`/api/comment/${postId}`, {
+      method: 'POST',
+      body: JSON.stringify(commentData),
+    });
+  },
+
+  // 게시글의 모든 댓글 조회
+  getComments: async (postId) => {
+    return fetchApi(`/api/comment/${postId}`);
+  },
+
+  // 나머지는 그대로 유지
+  updateComment: async (commentId, { content, password }) => {
+    return fetchApi(`/api/comment/${commentId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        content,
+        password,
+      }),
+    });
+  },
+
+  deleteComment: async (commentId, password) => {
+    return fetchApi(`/api/comment/${commentId}`, {
+      method: 'DELETE',
+      body: JSON.stringify({ password }),
+    });
+  },
+};
+
+export const categoryApi = {
+  // 기존 카테고리 목록 조회 유지
+  getCategories: async () => {
+    return fetchApi('/api/category', {
+      method: 'GET',
+    });
+  },
+
+  // 특정 카테고리 조회
+  getCategory: async (categoryId) => {
+    return fetchApi(`/api/category/${categoryId}`, {
+      method: 'GET',
+    });
+  },
+
+  // 새 카테고리 생성 (전체 목록 반환)
+  createCategory: async (name) => {
+    return fetchApi('/api/category', {
+      method: 'POST',
+      body: JSON.stringify({ name }),
+    });
+  },
+
+  // 카테고리 수정 (전체 목록 반환)
+  updateCategory: async (categoryId, name) => {
+    return fetchApi(`/api/category/${categoryId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ name }),
+    });
+  },
+
+  // 카테고리 삭제 (전체 목록 반환)
+  deleteCategory: async (categoryId) => {
+    return fetchApi(`/api/category/${categoryId}`, {
+      method: 'DELETE',
+    });
+  },
+};
+
+export const adminApi = {
+  // 관리자 설정 조회
+  getAdminSettings: () => {
+    return fetchApi('/api/admin');
+  },
+
+  // 관리자 설정 업데이트 (닉네임, 블로그 이름, 블로그 설명)
+  updateSetting: (type, value) => {
+    return fetchApi(`/api/admin/${type}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ [type]: value }),
+    });
+  },
+};
