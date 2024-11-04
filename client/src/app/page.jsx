@@ -1,11 +1,11 @@
 'use client';
 
 import styles from './page.module.css';
-import { useState } from 'react';  
+import { useState } from 'react';
 import Navigation from './components/navigation';
 import Footer from './components/Footer';
 import { MainPostList } from './components/MainPostCard/MainPostCard';
-import { PostCardsList } from './components/PostCard/PostCard';
+import PostCardsList from './components/PostCard/PostCard';
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -95,9 +95,10 @@ export default function Home() {
             <span>거북목</span>의 하루
           </h2>
           <p className={styles.description}>
-            거북목 팀의 블로그에 오신것을 환영합니다.<br />
-            지금까지 보지못한 멋진 기술 블로그를 구현할<br />수 있다는 것을
-            보여드리겠습니다
+            거북목 팀의 블로그에 오신것을 환영합니다.
+            <br />
+            지금까지 보지못한 멋진 기술 블로그를 구현할
+            <br />수 있다는 것을 보여드리겠습니다
           </p>
         </div>
 
@@ -127,11 +128,7 @@ export default function Home() {
               <h2 className={styles.feedTitle}>/Feed</h2>
             </div>
             <div className={styles.grid}>
-              {[...Array(6)].map((_, index) => (
-                <div key={index} className={styles.placeholder}>
-                  <PostCardsList></PostCardsList>
-                </div>
-              ))}
+              <PostCardsList />
             </div>
 
             {/* 페이지네이션 */}

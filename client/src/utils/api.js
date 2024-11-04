@@ -36,8 +36,6 @@ export const authApi = {
 export const postApi = {
   // 최신 게시글 조회
   getRecentPosts: async (limit = 2) => {
-    // 서버에 limit 개수만큼의 최신 게시글 요청
-    // 예: /api/post?limit=2 는 2개의 게시글 요청
     return fetchApi(`/api/post?limit=${limit}`);
   },
 
@@ -127,6 +125,7 @@ export const commentApi = {
     return fetchApi(`/api/comment/${postId}`);
   },
 
+  // 댓글 수정
   updateComment: async (commentId, { content, password }) => {
     return fetchApi(`/api/comment/${commentId}`, {
       method: 'PATCH',
@@ -137,6 +136,7 @@ export const commentApi = {
     });
   },
 
+  // 댓글 삭제
   deleteComment: async (commentId, password, isAdmin = false) => {
     return fetchApi(`/api/comment/${commentId}`, {
       method: 'DELETE',
