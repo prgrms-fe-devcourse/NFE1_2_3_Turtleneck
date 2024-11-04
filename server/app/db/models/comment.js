@@ -1,11 +1,11 @@
-import mongoose, { Schema, models } from "mongoose";
+import mongoose, { Schema, models } from 'mongoose';
 
 export const commentSchema = new mongoose.Schema(
   {
     postId: {
       type: mongoose.Types.ObjectId,
       required: true,
-      ref: "Post",
+      ref: 'Post',
     },
     isAdmin: {
       type: Boolean,
@@ -17,11 +17,9 @@ export const commentSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
-    },
-    sessionId: {
-      type: String,
-      required: true,
+      required: function () {
+        return !this.isAdmin;
+      },
     },
     content: {
       type: String,
@@ -30,10 +28,10 @@ export const commentSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Comment =
-  mongoose.models["Comment"] || mongoose.model("Comment", commentSchema);
+  mongoose.models['Comment'] || mongoose.model('Comment', commentSchema);
 
 export default Comment;
