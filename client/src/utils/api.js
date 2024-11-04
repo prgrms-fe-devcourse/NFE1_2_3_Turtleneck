@@ -1,4 +1,3 @@
-// api.js
 const BASE_URL = 'http://localhost:3005';
 
 export const fetchApi = async (endpoint, options = {}) => {
@@ -95,6 +94,108 @@ export const likeApi = {
   removeLike: async (likeId) => {
     return fetchApi(`/api/like/${likeId}`, {
       method: 'DELETE',
+    });
+  },
+};
+
+export const commentApi = {
+  // 댓글 생성
+  createComment: async ({ postId, content, isAdmin, nickname, password }) => {
+    const commentData = isAdmin
+      ? {
+          postId,
+          content,
+          isAdmin: true,
+          nickname,
+        }
+      : {
+          postId,
+          content,
+          isAdmin: false,
+          nickname,
+          password,
+        };
+
+    return fetchApi(`/api/comment/${postId}`, {
+      method: 'POST',
+      body: JSON.stringify(commentData),
+    });
+  },
+
+  // 게시글의 모든 댓글 조회
+  getComments: async (postId) => {
+    return fetchApi(`/api/comment/${postId}`);
+  },
+
+  updateComment: async (commentId, { content, password }) => {
+    return fetchApi(`/api/comment/${commentId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        content,
+        password,
+      }),
+    });
+  },
+
+  deleteComment: async (commentId, password, isAdmin = false) => {
+    return fetchApi(`/api/comment/${commentId}`, {
+      method: 'DELETE',
+      body: JSON.stringify({ password, isAdmin }),
+    });
+  },
+};
+
+export const categoryApi = {
+  // 카테고리 목록 조회
+  getCategories: async () => {
+    return fetchApi('/api/category', {
+      method: 'GET',
+    });
+  },
+
+  // 특정 카테고리 조회 (게시글, 태그 정보 포함)
+  getCategory: async (categoryId) => {
+    return fetchApi(`/api/category/${categoryId}`, {
+      method: 'GET',
+    });
+    // 반환값: { category: {...}, posts: [...], tags: [...] }
+  },
+
+  // 새 카테고리 생성 (전체 목록 반환)
+  createCategory: async (name) => {
+    return fetchApi('/api/category', {
+      method: 'POST',
+      body: JSON.stringify({ name }),
+    });
+  },
+
+  // 카테고리 수정 (전체 목록 반환)
+  updateCategory: async (categoryId, name) => {
+    return fetchApi(`/api/category/${categoryId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ name }),
+    });
+  },
+
+  // 카테고리 삭제 (전체 목록 반환)
+  deleteCategory: async (categoryId) => {
+    return fetchApi(`/api/category/${categoryId}`, {
+      method: 'DELETE',
+    });
+  },
+};
+
+export const adminApi = {
+  // 관리자 설정 조회
+  getAdminSettings: () => {
+    return fetchApi('/api/admin');
+  },
+
+  // 관리자 설정 업데이트 (닉네임, 블로그 이름, 블로그 설명)
+  updateSetting: (type, value) => {
+    return fetchApi(`/api/admin/${type}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ [type]: value }),
     });
   },
 };
