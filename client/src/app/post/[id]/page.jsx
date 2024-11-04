@@ -14,7 +14,10 @@ import LikeButton from '../components/LikeButton';
 import Navigation from '@/app/components/navigation';
 
 // 필요한 언어 등록 (예: JavaScript, Python 등)
-hljs.registerLanguage('javascript', require('highlight.js/lib/languages/javascript'));
+hljs.registerLanguage(
+  'javascript',
+  require('highlight.js/lib/languages/javascript'),
+);
 hljs.registerLanguage('python', require('highlight.js/lib/languages/python'));
 
 // MarkdownIt 인스턴스 생성 및 하이라이팅 플러그인 설정
@@ -47,6 +50,22 @@ export default function PostDetail() {
   if (!post) return <div>로딩중...</div>;
 
   const categoryName = post.categoryId?.name || 'Uncategorized';
+
+  const handleEdit = () => {
+    router.push(`/edit/${params.id}`); // 수정 페이지 경로로 이동
+  };
+
+  const handleDelete = async () => {
+    if (confirm('정말 이 게시글을 삭제하시겠습니까?')) {
+      try {
+        await postApi.deletePost(params.id); // 게시글 삭제 API 호출
+        router.push('/'); // 메인 페이지로 이동
+      } catch (error) {
+        console.error('게시글 삭제 중 오류 발생:', error);
+        alert('게시글을 삭제하는 중 문제가 발생했습니다.');
+      }
+    }
+  };
 
   return (
     <div className={styles.post_container}>
@@ -86,8 +105,12 @@ export default function PostDetail() {
         <div className={styles.article_header}>
           <div className={styles.section_name}>/ ARTICLE</div>
           <div className={styles.article_btns}>
-            <button className={styles.btn_edit}>EDIT</button>
-            <button className={styles.btn_delete}>DELETE</button>
+            <button className={styles.btn_edit} onClick={handleEdit}>
+              EDIT
+            </button>
+            <button className={styles.btn_delete} onClick={handleDelete}>
+              DELETE
+            </button>
           </div>
         </div>
         <article className={styles.article_content}>
