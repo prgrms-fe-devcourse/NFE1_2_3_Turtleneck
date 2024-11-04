@@ -14,7 +14,12 @@ export const fetchApi = async (endpoint, options = {}) => {
     const data = await response.json();
 
     if (!response.ok) {
-      throw new Error(data.error || '요청 처리 중 오류가 발생했습니다');
+      const error = new Error(
+        data.message || '요청 처리 중 오류가 발생했습니다',
+      );
+      error.status = response.status;
+      error.data = data;
+      throw error;
     }
 
     return data;
