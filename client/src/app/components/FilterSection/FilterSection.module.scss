@@ -1,0 +1,91 @@
+.filterBox {
+  padding: 1rem;
+  background: #fff;
+  font-family: 'Pretendard', sans-serif;
+}
+
+.filtersContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.filterColumn {
+  min-width: 0;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: -0.7rem;
+}
+
+.listContainer {
+  position: relative;
+  padding-left: 0.5rem;
+}
+
+.verticalDottedLine {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  border-left: 1px dashed #ccc;
+}
+
+.categoryList,
+.tagList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  position: relative;
+  padding-left: 0.5rem;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 14px;
+  font-weight: 600;
+  color: #667085;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+
+  &:has(input:checked) {
+    color: #344054;
+    background-color: rgba(46, 211, 183, 0.1);
+  }
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #d0d5dd;
+  border-radius: 8px;
+  accent-color: #2ed3b7;
+  cursor: pointer;
+
+  &:checked {
+    background-color: #2ed3b7;
+    border-color: #2ed3b7;
+  }
+}
+
+.noTags {
+  color: #667085;
+  font-size: 14px;
+  font-style: italic;
+}
+
+.chevronIcon,
+.folderIcon {
+  object-fit: contain;
+}
