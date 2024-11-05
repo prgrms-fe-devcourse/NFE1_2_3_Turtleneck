@@ -2,14 +2,14 @@
 
 import { useState } from 'react';
 import BlogSettings from './components/BlogSettings';
+import Comments from './components/Comments';
 import styles from './page.module.scss';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 export default function AdminPage() {
-
   const router = useRouter();
-  
+
   const goBack = () => {
     router.back();
   };
@@ -21,7 +21,7 @@ export default function AdminPage() {
       case 'Names & Category':
         return <BlogSettings />;
       case 'Comments':
-        return <div>댓글 관리 기능 구현 예정</div>;
+        return <Comments />;
       case 'Sections':
         return <div>섹션 관리 기능 구현 예정</div>;
       default:
@@ -33,21 +33,21 @@ export default function AdminPage() {
     <div className={styles.page}>
       <div className={`container ${styles.container}`}>
         <div className={styles.back_button}>
-            <Image 
-              src="/images/arrow-left.png" 
-              width={33} 
-              height={34} 
-              alt="back button" 
-              onClick={goBack}
-              className={styles.arrow_icon}
-            />
-          </div>
+          <Image
+            src="/images/arrow-left.png"
+            width={33}
+            height={34}
+            alt="back button"
+            onClick={goBack}
+            className={styles.arrow_icon}
+          />
+        </div>
         <h1 className={styles.header}>SETTING</h1>
 
         <div className={styles.layout}>
           {/* 왼쪽 필터 */}
           <div className={styles.filters}>
-            <div className={styles.filter_label}> FILTERS</div>
+            <div className={styles.filter_label}>/ FILTERS</div>
             <div className={styles.topic_list}>
               <div
                 className={`${styles.topic_item} ${selectedTopic === 'Names & Category' ? styles.active : ''}`}
