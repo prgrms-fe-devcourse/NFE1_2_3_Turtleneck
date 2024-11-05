@@ -257,8 +257,57 @@ export default function Comments({ postId }) {
           <div key={comment._id} className={styles.comment_item}>
             <div className={styles.comment_header}>
               <div className={styles.comment_nickname}>{comment.nickname}</div>
-              {isEditing === comment._id ? (
-                <div className={styles.comment_actions}>
+              {!isEditing && // 수정 모드가 아닐 때만 수정/삭제 버튼 표시
+                ((session && comment.isAdmin) ||
+                  (!session && !comment.isAdmin) ||
+                  (session && !comment.isAdmin)) && (
+                  <div className={styles.comment_actions}>
+                    <button
+                      className={styles.action_button}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowActionMenu((prev) =>
+                          prev === comment._id ? null : comment._id,
+                        );
+                      }}
+                    >
+                      <Image
+                        src={dotsHorizontal}
+                        alt="actions"
+                        width={20}
+                        height={20}
+                        className={styles.dots_icon}
+                      />
+                    </button>
+                    {showActionMenu === comment._id && (
+                      <div className={styles.action_menu}>
+                        {((session && comment.isAdmin) ||
+                          (!session && !comment.isAdmin)) && (
+                          <button onClick={() => handleAction(comment, 'edit')}>
+                            수정
+                          </button>
+                        )}
+                        {(session || (!session && !comment.isAdmin)) && (
+                          <button
+                            onClick={() => handleAction(comment, 'delete')}
+                          >
+                            삭제
+                          </button>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
+            </div>
+            {isEditing === comment._id ? (
+              <div className={styles.edit_form}>
+                <textarea
+                  className={styles.input_comment_text}
+                  value={editContent}
+                  onChange={(e) => setEditContent(e.target.value)}
+                  placeholder="댓글을 작성하세요."
+                />
+                <div className={styles.edit_buttons}>
                   <button
                     className={styles.btn_save}
                     onClick={() => handleEdit(comment._id)}
@@ -272,55 +321,6 @@ export default function Comments({ postId }) {
                     취소
                   </button>
                 </div>
-              ) : // 수정/삭제 버튼 표시 조건
-              (session && comment.isAdmin) ||
-                (!session && !comment.isAdmin) ||
-                (session && !comment.isAdmin) ? (
-                <div className={styles.comment_actions}>
-                  <button
-                    className={styles.action_button}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setShowActionMenu((prev) =>
-                        prev === comment._id ? null : comment._id,
-                      );
-                    }}
-                  >
-                    <Image
-                      src={dotsHorizontal}
-                      alt="actions"
-                      width={20}
-                      height={20}
-                      className={styles.dots_icon}
-                    />
-                  </button>
-                  {showActionMenu === comment._id && (
-                    <div className={styles.action_menu}>
-                      {/* 수정 버튼은 관리자의 경우 자신의 글만, 비로그인은 자신의 일반 글만 */}
-                      {((session && comment.isAdmin) ||
-                        (!session && !comment.isAdmin)) && (
-                        <button onClick={() => handleAction(comment, 'edit')}>
-                          수정
-                        </button>
-                      )}
-                      {/* 삭제 버튼은 관리자는 모든 글, 비로그인은 자신의 일반 글만 */}
-                      {(session || (!session && !comment.isAdmin)) && (
-                        <button onClick={() => handleAction(comment, 'delete')}>
-                          삭제
-                        </button>
-                      )}
-                    </div>
-                  )}
-                </div>
-              ) : null}
-            </div>
-            {isEditing === comment._id ? (
-              <div className={styles.edit_form}>
-                <textarea
-                  className={styles.input_comment_text}
-                  value={editContent}
-                  onChange={(e) => setEditContent(e.target.value)}
-                />
               </div>
             ) : (
               <div>
