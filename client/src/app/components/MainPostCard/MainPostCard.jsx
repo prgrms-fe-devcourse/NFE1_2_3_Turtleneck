@@ -25,24 +25,26 @@ const MainPostCard = ({ post }) => {
             <span className={styles.dot}>■</span> {categoryName}
           </span>
           <span className={styles.date}>
-            {post?.createdAt ? new Date(post.createdAt).toLocaleDateString() : ''}
+            {post?.createdAt
+              ? new Date(post.createdAt).toLocaleDateString()
+              : ''}
           </span>
         </div>
 
-
         {/* 포스트 제목과 내용을 눌러 해당 게시글로 이동 */}
-         <Link href={`/post/${post._id}`} className={styles.post_link}>
+        <Link href={`/post/${post._id}`} className={styles.post_link}>
           <h2 className={styles.title}>{post?.title}</h2>
           <p className={styles.description}>{post?.content}</p>
         </Link>
 
         {/* 태그 목록 */}
         <div className={styles.tags}>
-          {Array.isArray(post?.tags) && post.tags.map((tag, index) => (
-            <button key={index} className={styles.tag}>
-              #{tag}
-            </button>
-          ))}
+          {Array.isArray(post?.tags) &&
+            post.tags.map((tag, index) => (
+              <button key={index} className={styles.tag}>
+                #{tag}
+              </button>
+            ))}
         </div>
       </div>
 
@@ -50,7 +52,7 @@ const MainPostCard = ({ post }) => {
       <div className={styles.image_wrapper}>
         <Image
           className={styles.image}
-          src={post?.mainImage ? `/${post.mainImage}` : DEFAULT_IMAGE}
+          src={post.mainImage ? `${post.mainImage}` : DEFAULT_IMAGE}
           fill
           alt={`Main post image of ${post?.title || 'Post'}`}
         />
@@ -103,10 +105,7 @@ const MainPostList = () => {
   return (
     <div className={styles.main_post_box}>
       {posts.map((post) => (
-        <MainPostCard 
-          key={post._id} 
-          post={post} 
-        />
+        <MainPostCard key={post._id} post={post} />
       ))}
     </div>
   );
@@ -119,13 +118,14 @@ MainPostCard.propTypes = {
     title: PropTypes.string.isRequired, // 게시물 제목
     content: PropTypes.string.isRequired, // 게시물 내용
     mainImage: PropTypes.string, // 메인 이미지 경로 (선택)
-    categoryId: PropTypes.shape({ // 카테고리 정보
+    categoryId: PropTypes.shape({
+      // 카테고리 정보
       _id: PropTypes.string,
-      name: PropTypes.string
+      name: PropTypes.string,
     }),
     tags: PropTypes.arrayOf(PropTypes.string), // 태그 배열
-    createdAt: PropTypes.string // 생성 날짜
-  }).isRequired
+    createdAt: PropTypes.string, // 생성 날짜
+  }).isRequired,
 };
 
 // 컴포넌트 내보내기
