@@ -73,10 +73,19 @@ export const uploadApi = {
 
 export const postApi = {
   // 최신 게시글 조회
-  getRecentPosts: async (limit = 2) => {
-    // 서버에 limit 개수만큼의 최신 게시글 요청
-    // 예: /api/post?limit=2 는 2개의 게시글 요청
-    return fetchApi(`/api/post?limit=${limit}`);
+  getRecentPosts: async (limit = 2, categoryId = null) => {
+    // categoryId가 없으면 전체 게시글 중 최신 순으로 limit개 조회
+    // categoryId가 있으면 해당 카테고리의 게시글 중 최신 순으로 limit개 조회
+    let url = `/api/post?limit=${limit}`;
+    if (categoryId) {
+      url += `&categoryId=${categoryId}`;
+    }
+    return fetchApi(url);
+  },
+
+  // 특정 카테고리의 게시글만 조회하는 함수
+  getPostsByCategory: async (categoryId, limit = 2) => {
+    return fetchApi(`/api/post?categoryId=${categoryId}&limit=${limit}`);
   },
 
   // 모든 게시글 조회
@@ -283,6 +292,13 @@ export const adminApi = {
     return fetchApi(`/api/comment/${commentId}`, {
       method: 'DELETE',
       body: JSON.stringify({ isAdmin: true }),
+    });
+  },
+
+  updateMainPostCategory: (categoryId) => {
+    return fetchApi('/api/admin/mainPostCategory', {
+      method: 'PATCH',
+      body: JSON.stringify({ mainPostCategoryId: categoryId }),
     });
   },
 };
