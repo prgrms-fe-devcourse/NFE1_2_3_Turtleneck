@@ -50,7 +50,6 @@ export async function POST(req, res) {
   await dbConnect();
 
   try {
-    // 3. formData에서 게시글 내용 추출
     const formData = await req.formData();
     const title = formData.get('title');
     const content = formData.get('content');

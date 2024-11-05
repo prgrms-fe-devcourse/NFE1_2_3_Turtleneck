@@ -61,6 +61,9 @@ export const authApi = {
 //파일 업로드 기능
 export const uploadApi = {
   createFile: async (formData) => {
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
     return fetchApimulti('/api/upload', {
       method: 'POST',
       body: formData,
@@ -102,6 +105,7 @@ export const postApi = {
       body: formData, // FormData 사용
     });
   },
+
   // 특정 게시글 조회
   getPost: async (postId) => {
     return fetchApi(`/api/post/${postId}`);
