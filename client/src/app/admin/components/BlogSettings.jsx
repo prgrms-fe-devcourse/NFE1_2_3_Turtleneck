@@ -134,6 +134,9 @@ const BlogSettings = () => {
 
   return (
     <div className={styles.content}>
+      <div className={styles.setting_header}>
+        / SETTING
+      </div>
       <div className={styles.setting_list}>
         <div className={styles.setting_item}>
           <div className={styles.setting_label}>NICKNAME</div>

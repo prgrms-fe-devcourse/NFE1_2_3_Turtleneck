@@ -48,7 +48,7 @@ export default function Navigation() {
                   [P] POSTING
                 </Link>
                 <Link
-                  href="/setting"
+                  href="/admin"
                   className={`${styles.menuItem} ${inconsolata.className}`}
                 >
                   [S] SETTING
