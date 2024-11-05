@@ -1,10 +1,6 @@
-// src/app/components/PostCard/PostCard.jsx
-
-import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import PropTypes from 'prop-types';
 import styles from './PostCard.module.scss';
-import { postApi } from '@/utils/api';
 import Link from 'next/link';
 
 const PostCard = ({ postId, category, date, image, title, tags }) => {
@@ -50,31 +46,10 @@ PostCard.propTypes = {
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-const PostCardsList = () => {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await postApi.getAllPosts();
-        setPosts(Array.isArray(response) ? response : []);
-      } catch (err) {
-        console.error('Error fetching posts:', err);
-        setError('게시물을 불러오는데 실패했습니다.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPosts();
-  }, []);
-
-  if (loading) return <div className={styles.loading}>Loading...</div>;
-  if (error) return <div className={styles.error}>{error}</div>;
-  if (!posts.length)
+const PostCardsList = ({ posts }) => {
+  if (!posts?.length) {
     return <div className={styles.no_posts}>게시물이 없습니다.</div>;
+  }
 
   return (
     <>

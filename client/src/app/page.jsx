@@ -6,11 +6,14 @@ import Navigation from './components/navigation';
 import Footer from './components/Footer';
 import { MainPostList } from './components/MainPostCard/MainPostCard';
 import PostCardsList from './components/PostCard/PostCard';
-import { adminApi } from '@/utils/api';
+import { adminApi, postApi } from '@/utils/api';
+
+const POSTS_PER_PAGE = 6;
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 10;
+  const [posts, setPosts] = useState([]);
+  const [totalPosts, setTotalPosts] = useState(0);
   const [adminSettings, setAdminSettings] = useState({
     nickname: '',
     blogTitle: '',
@@ -18,21 +21,39 @@ export default function Home() {
   });
 
   useEffect(() => {
-    const fetchAdminSettings = async () => {
+    const fetchData = async () => {
       try {
-        const response = await adminApi.getAdminSettings();
+        const [adminResponse, postsResponse] = await Promise.all([
+          adminApi.getAdminSettings(),
+          postApi.getAllPosts(),
+        ]);
+
         setAdminSettings({
-          nickname: response.admin.nickname || '',
-          blogTitle: response.admin.blogTitle || '',
-          blogInfo: response.admin.blogInfo || '',
+          nickname: adminResponse.admin.nickname || '',
+          blogTitle: adminResponse.admin.blogTitle || '',
+          blogInfo: adminResponse.admin.blogInfo || '',
         });
+
+        const allPosts = Array.isArray(postsResponse) ? postsResponse : [];
+        setPosts(allPosts);
+        setTotalPosts(allPosts.length);
       } catch (error) {
-        console.error('관리자 설정을 불러오는데 실패했습니다:', error);
+        console.error('데이터를 불러오는데 실패했습니다:', error);
       }
     };
 
-    fetchAdminSettings();
+    fetchData();
   }, []);
+
+  // 총 페이지 수 계산
+  const totalPages = Math.ceil(totalPosts / POSTS_PER_PAGE);
+
+  // 현재 페이지의 포스트들
+  const getCurrentPagePosts = () => {
+    const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+    const endIndex = startIndex + POSTS_PER_PAGE;
+    return posts.slice(startIndex, endIndex);
+  };
 
   // 페이지네이션 렌더링 함수
   const renderPagination = () => {
@@ -57,14 +78,14 @@ export default function Home() {
           className={`${styles.pageButton} ${currentPage === 1 ? styles.active : ''}`}
         >
           1
-        </button>,
+        </button>
       );
 
       if (displayPages[0] > 2) {
         pages.push(
           <span key="ellipsis1" className={styles.ellipsis}>
             ...
-          </span>,
+          </span>
         );
       }
     }
@@ -75,10 +96,12 @@ export default function Home() {
         <button
           key={pageNum}
           onClick={() => setCurrentPage(pageNum)}
-          className={`${styles.pageButton} ${currentPage === pageNum ? styles.active : ''}`}
+          className={`${styles.pageButton} ${
+            currentPage === pageNum ? styles.active : ''
+          }`}
         >
           {pageNum}
-        </button>,
+        </button>
       );
     });
 
@@ -88,7 +111,7 @@ export default function Home() {
         pages.push(
           <span key="ellipsis2" className={styles.ellipsis}>
             ...
-          </span>,
+          </span>
         );
       }
 
@@ -96,10 +119,12 @@ export default function Home() {
         <button
           key={totalPages}
           onClick={() => setCurrentPage(totalPages)}
-          className={`${styles.pageButton} ${currentPage === totalPages ? styles.active : ''}`}
+          className={`${styles.pageButton} ${
+            currentPage === totalPages ? styles.active : ''
+          }`}
         >
           {totalPages}
-        </button>,
+        </button>
       );
     }
 
@@ -117,9 +142,7 @@ export default function Home() {
           <h2 className={styles.subtitle}>
             <span>{adminSettings.nickname}</span>의 하루
           </h2>
-          <p className={styles.description}>
-              {adminSettings.blogInfo}
-          </p>
+          <p className={styles.description}>{adminSettings.blogInfo}</p>
         </div>
 
         {/* 메인 포스트 섹션 */}
@@ -135,7 +158,6 @@ export default function Home() {
         <div className={styles.feed_name}>Feed</div>
         {/* 콘텐츠 컨테이너 */}
         <div className={styles.contentContainer}>
-        
           {/* 필터 섹션 */}
           <aside className={styles.filterSection}>
             <div className={styles.filterHeader}>
@@ -150,11 +172,13 @@ export default function Home() {
               <h2 className={styles.feedTitle}>/Post</h2>
             </div>
             <div className={styles.grid}>
-              <PostCardsList />
+              <PostCardsList posts={getCurrentPagePosts()} />
             </div>
 
             {/* 페이지네이션 */}
-            <div className={styles.pagination}>{renderPagination()}</div>
+            {totalPages > 1 && (
+              <div className={styles.pagination}>{renderPagination()}</div>
+            )}
           </section>
         </div>
       </div>
