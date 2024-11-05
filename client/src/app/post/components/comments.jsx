@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSession } from 'next-auth/react';
 import styles from './CommentSection.module.scss';
 import { commentApi } from '@/utils/api';
@@ -15,6 +15,7 @@ export default function Comments({ postId }) {
   const [selectedComment, setSelectedComment] = useState(null);
   const [actionType, setActionType] = useState(null);
   const [showActionMenu, setShowActionMenu] = useState(null);
+  const actionMenuRef = useRef(null);
 
   const [newComment, setNewComment] = useState({
     content: '',
@@ -32,6 +33,22 @@ export default function Comments({ postId }) {
         console.error('댓글 로딩 실패:', error);
       }
     };
+
+    useEffect(() => {
+      function handleClickOutside(event) {
+        if (
+          showActionMenu &&
+          !event.target.closest(`.${styles.comment_actions}`)
+        ) {
+          setShowActionMenu(null);
+        }
+      }
+
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, [showActionMenu]);
 
     fetchComments();
   }, [postId]);
@@ -249,7 +266,12 @@ export default function Comments({ postId }) {
                 <div className={styles.comment_actions}>
                   <button
                     className={styles.action_button}
-                    onClick={() => setShowActionMenu(comment._id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowActionMenu((prev) =>
+                        prev === comment._id ? null : comment._id,
+                      );
+                    }}
                   >
                     ⚙️
                   </button>
