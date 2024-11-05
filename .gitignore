@@ -31,9 +31,11 @@ yarn-error.log*
 .env.*
 !.env.example
 
-# dist file
-server/app/db/models/dist
-server/app/api/upload/dist
-.dev.js
-client/src/app/write/dist/write.module.css
-server/app/api/post/dist/route.dev.js
+# Ignore all .module.css files in any location
+**/*.module.css
+
+# Ignore all dist directories in any location
+**/dist/
+
+# Ignore .dev.js files in any location
+*.dev.js
