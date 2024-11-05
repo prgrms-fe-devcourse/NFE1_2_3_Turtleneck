@@ -4,6 +4,14 @@ import Post from '@/app/db/models/post';
 import Category from '@/app/db/models/category';
 import Like from '@/app/db/models/like';
 import Comment from '@/app/db/models/comment';
+import formidable from 'formidable';
+import fs from 'fs';
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
 export async function GET(request) {
   await dbConnect();
@@ -38,17 +46,19 @@ export async function GET(request) {
   }
 }
 
-export async function POST(req) {
+export async function POST(req, res) {
   await dbConnect();
 
   try {
+    // 3. formData에서 게시글 내용 추출
     const formData = await req.formData();
     const title = formData.get('title');
     const content = formData.get('content');
     const categoryId = formData.get('categoryId');
     const mainImage = formData.get('mainImage');
-    const tags = formData.get('tags');
+    const tags = formData.getAll('tags');
 
+    // 4. 새로운 게시글 생성
     const newPost = await Post.create({
       title,
       content,

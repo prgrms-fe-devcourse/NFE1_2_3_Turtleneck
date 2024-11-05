@@ -6,7 +6,7 @@ import Image from 'next/image';
 import MdEditor from 'react-markdown-editor-lite';
 import { useRef, useState, useEffect } from 'react';
 import './editor.css';
-import { categoryApi, postApi } from '@/utils/api';
+import { categoryApi, postApi, uploadApi } from '@/utils/api';
 import { useParams, useRouter } from 'next/navigation';
 
 export default function write() {
@@ -71,7 +71,6 @@ export default function write() {
     fetchPost();
   }, []);
 
-  console.log('tagsData: ', tagsData);
   //formdata에 따라서 textarea길이변경하기
   const textareaRef = useRef(null);
 
@@ -120,11 +119,34 @@ export default function write() {
     }
   };
 
+  const imgReset = () => {
+    if (imgRef.current) {
+      imgRef.current.value = '';
+    }
+  };
+
+  //파일 업로드
+  const handleImageUpload = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('filename', file.name); // 파일 이름 추가
+
+    try {
+      // 이미지 파일을 서버로 업로드
+      const response = await uploadApi.createFile(formData);
+
+      // 서버에서 반환한 이미지 URL 사용
+      const imageUrl = response.url;
+      return imageUrl;
+    } catch (error) {
+      console.error('Image upload failed: ', error);
+      return '';
+    }
+  };
+
   //submit 요청보내기
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-
-    setFormTag(tagsData);
 
     if (!formTitle.trim()) {
       alert('내용을 입력하세요.');
@@ -251,6 +273,7 @@ export default function write() {
                 value={textData}
                 renderHTML={(text) => mdParser.render(text)}
                 onChange={handleEditorChange}
+                onImageUpload={handleImageUpload}
               />
             </div>
           </form>

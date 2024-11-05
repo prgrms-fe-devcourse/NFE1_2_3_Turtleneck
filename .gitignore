@@ -30,3 +30,12 @@ yarn-error.log*
 .env
 .env.*
 !.env.example
+
+# Ignore all .module.css files in any location
+**/*.module.css
+
+# Ignore all dist directories in any location
+**/dist/
+
+# Ignore .dev.js files in any location
+*.dev.js

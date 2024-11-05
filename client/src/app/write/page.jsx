@@ -6,12 +6,13 @@ import Image from 'next/image';
 import MdEditor from 'react-markdown-editor-lite';
 import { useRef, useState, useEffect } from 'react';
 import './editor.css';
-import { categoryApi, postApi } from '@/utils/api';
+import { categoryApi, postApi, uploadApi } from '@/utils/api';
 import { useRouter } from 'next/navigation';
 
 export default function write() {
   const mdParser = new MarkdownIt(/* Markdown-it options */);
   const router = useRouter();
+  const imgRef = useRef(null);
 
   //FORM DATA BASE
   const [Selected, setSelected] = useState('');
@@ -61,6 +62,7 @@ export default function write() {
   };
 
   function handleEditorChange({ html, text }) {
+    console.log('handleEditorChange', html, text);
     setFormTag(tagsData);
     setTextData(text);
     setFormText(textData);
@@ -88,6 +90,31 @@ export default function write() {
       setImage(file); // 파일 객체를 상태에 설정
     } else {
       setImage(null); // 파일이 없을 경우 상태 초기화
+    }
+  };
+
+  const imgReset = () => {
+    if (imgRef.current) {
+      imgRef.current.value = '';
+    }
+  };
+
+  //파일 업로드
+  const handleImageUpload = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('filename', file.name); // 파일 이름 추가
+
+    try {
+      // 이미지 파일을 서버로 업로드
+      const response = await uploadApi.createFile(formData);
+
+      // 서버에서 반환한 이미지 URL 사용
+      const imageUrl = response.url;
+      return imageUrl;
+    } catch (error) {
+      console.error('Image upload failed: ', error);
+      return '';
     }
   };
 
@@ -202,17 +229,23 @@ export default function write() {
                 <hr className={styles.HR2} />
 
                 <div className={styles.img_select}>
-                  <span className={styles.input_title}>대표이미지</span>
-                  <label htmlFor="file">
-                    <input
-                      className={styles.file_input_button}
-                      type="file"
-                      accept="image/jpg, image/jpeg, image/png"
-                      onChange={handleFileChange}
-                      name="file"
-                      id="file"
-                    />
-                  </label>
+                  <div>
+                    <span className={styles.input_title}>대표이미지</span>
+                    <label htmlFor="file">
+                      <input
+                        className={styles.file_input_button}
+                        type="file"
+                        accept="image/jpg, image/jpeg, image/png"
+                        onChange={handleFileChange}
+                        name="file"
+                        id="file"
+                        ref={imgRef}
+                      />
+                    </label>
+                  </div>
+                  <button type="button" onClick={imgReset}>
+                    삭제하기
+                  </button>
                 </div>
               </div>
 
@@ -220,6 +253,7 @@ export default function write() {
                 className={styles.editor}
                 renderHTML={(text) => mdParser.render(text)}
                 onChange={handleEditorChange}
+                onImageUpload={handleImageUpload}
               />
             </div>
           </form>
