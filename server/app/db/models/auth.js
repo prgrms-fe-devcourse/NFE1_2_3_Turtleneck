@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 export const authSchema = new mongoose.Schema(
   {
@@ -20,12 +20,17 @@ export const authSchema = new mongoose.Schema(
     blogInfo: {
       type: String,
     },
+    mainPostCategoryId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
+      default: null,
+    },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-const Auth = mongoose.models["Auth"] || mongoose.model("Auth", authSchema);
+const Auth = mongoose.models['Auth'] || mongoose.model('Auth', authSchema);
 
 export default Auth;
