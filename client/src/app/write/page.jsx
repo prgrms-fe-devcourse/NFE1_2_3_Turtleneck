@@ -99,6 +99,25 @@ export default function write() {
     }
   };
 
+  //파일 업로드
+  const handleImageUpload = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('filename', file.name); // 파일 이름 추가
+
+    try {
+      // 이미지 파일을 서버로 업로드
+      const response = await uploadApi.createFile(formData);
+
+      // 서버에서 반환한 이미지 URL 사용
+      const imageUrl = response.url;
+      return imageUrl;
+    } catch (error) {
+      console.error('Image upload failed: ', error);
+      return '';
+    }
+  };
+
   //submit 요청보내기
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -129,25 +148,6 @@ export default function write() {
   //edit버튼 이동기능
   const goBack = (e) => {
     router.back();
-  };
-
-  //파일 업로드
-  const handleImageUpload = async (file) => {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('filename', file.name); // 파일 이름 추가
-
-    try {
-      // 이미지 파일을 서버로 업로드
-      const response = await uploadApi.createFile(formData);
-
-      // 서버에서 반환한 이미지 URL 사용
-      const imageUrl = response.url;
-      return imageUrl;
-    } catch (error) {
-      console.error('Image upload failed: ', error);
-      return '';
-    }
   };
 
   return (
