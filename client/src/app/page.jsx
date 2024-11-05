@@ -1,15 +1,38 @@
 'use client';
 
 import styles from './page.module.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navigation from './components/navigation';
 import Footer from './components/Footer';
 import { MainPostList } from './components/MainPostCard/MainPostCard';
 import PostCardsList from './components/PostCard/PostCard';
+import { adminApi } from '@/utils/api';
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 10;
+  const [adminSettings, setAdminSettings] = useState({
+    nickname: '',
+    blogTitle: '',
+    blogInfo: '',
+  });
+
+  useEffect(() => {
+    const fetchAdminSettings = async () => {
+      try {
+        const response = await adminApi.getAdminSettings();
+        setAdminSettings({
+          nickname: response.admin.nickname || '',
+          blogTitle: response.admin.blogTitle || '',
+          blogInfo: response.admin.blogInfo || '',
+        });
+      } catch (error) {
+        console.error('관리자 설정을 불러오는데 실패했습니다:', error);
+      }
+    };
+
+    fetchAdminSettings();
+  }, []);
 
   // 페이지네이션 렌더링 함수
   const renderPagination = () => {
@@ -90,15 +113,12 @@ export default function Home() {
       <div className="container">
         {/* 히어로 섹션 */}
         <div className={styles.hero}>
-          <h1 className={styles.title}>천방지축 돌아가는</h1>
+          <h1 className={styles.title}>{adminSettings.blogTitle}</h1>
           <h2 className={styles.subtitle}>
-            <span>거북목</span>의 하루
+            <span>{adminSettings.nickname}</span>의 하루
           </h2>
           <p className={styles.description}>
-            거북목 팀의 블로그에 오신것을 환영합니다.
-            <br />
-            지금까지 보지못한 멋진 기술 블로그를 구현할
-            <br />수 있다는 것을 보여드리겠습니다
+              {adminSettings.blogInfo}
           </p>
         </div>
 
@@ -112,8 +132,10 @@ export default function Home() {
           </div>
         </div>
 
+        <div className={styles.feed_name}>Feed</div>
         {/* 콘텐츠 컨테이너 */}
         <div className={styles.contentContainer}>
+        
           {/* 필터 섹션 */}
           <aside className={styles.filterSection}>
             <div className={styles.filterHeader}>
@@ -125,7 +147,7 @@ export default function Home() {
           {/* 피드 섹션 */}
           <section className={styles.feedSection}>
             <div className={styles.feedHeader}>
-              <h2 className={styles.feedTitle}>/Feed</h2>
+              <h2 className={styles.feedTitle}>/Post</h2>
             </div>
             <div className={styles.grid}>
               <PostCardsList />
