@@ -22,7 +22,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-left: -0.7rem; // 이전 값으로 복원
+  margin-left: -0.7rem;
 }
 
 .listContainer {
@@ -60,8 +60,8 @@
   border-radius: 4px;
 
   &:has(input:checked) {
-    color: #344054; // 선택 시 글자색
-    background-color: rgba(46, 211, 183, 0.1); // 선택 시 배경색 (연한 민트색)
+    color: #344054;
+    background-color: rgba(46, 211, 183, 0.1);
   }
 }
 
