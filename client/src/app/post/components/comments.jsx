@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import styles from './CommentSection.module.scss';
 import { commentApi } from '@/utils/api';
@@ -15,7 +15,6 @@ export default function Comments({ postId }) {
   const [selectedComment, setSelectedComment] = useState(null);
   const [actionType, setActionType] = useState(null);
   const [showActionMenu, setShowActionMenu] = useState(null);
-  const actionMenuRef = useRef(null);
 
   const [newComment, setNewComment] = useState({
     content: '',
@@ -36,22 +35,6 @@ export default function Comments({ postId }) {
 
     fetchComments();
   }, [postId]);
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (
-        actionMenuRef.current &&
-        !actionMenuRef.current.contains(event.target)
-      ) {
-        setShowActionMenu(null);
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
 
   // 날짜 포맷팅
   const formatDate = (dateString) => {
@@ -143,8 +126,9 @@ export default function Comments({ postId }) {
     try {
       if (actionType === 'edit') {
         const comment = comments.find((c) => c._id === selectedComment);
-        await handleEdit(selectedComment, passwordInput);
-        setShowPasswordModal(false);
+        setIsEditing(selectedComment); // 먼저 수정 모드로 전환
+        setEditContent(comment.content); // 내용 설정
+        setShowPasswordModal(false); // 모달 닫기
       } else if (actionType === 'delete') {
         await handleDelete(selectedComment, passwordInput);
         setShowPasswordModal(false);
@@ -158,9 +142,11 @@ export default function Comments({ postId }) {
   // 댓글 수정
   const handleEdit = async (commentId, password = null) => {
     try {
+      // 관리자 로그인 상태와 일반 사용자를 구분
       await commentApi.updateComment(commentId, {
         content: editContent,
         password: password,
+        isAdmin: session ? true : false, // 추가: 관리자 여부 전달
       });
 
       setIsEditing(null);
@@ -260,27 +246,23 @@ export default function Comments({ postId }) {
               (session && comment.isAdmin) ||
                 (!session && !comment.isAdmin) ||
                 (session && !comment.isAdmin) ? (
-                <div className={styles.comment_actions} ref={actionMenuRef}>
+                <div className={styles.comment_actions}>
                   <button
                     className={styles.action_button}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setShowActionMenu((prev) =>
-                        prev === comment._id ? null : comment._id,
-                      );
-                    }}
+                    onClick={() => setShowActionMenu(comment._id)}
                   >
                     ⚙️
                   </button>
                   {showActionMenu === comment._id && (
                     <div className={styles.action_menu}>
-                      {/* 나머지 버튼들은 그대로 */}
+                      {/* 수정 버튼은 관리자의 경우 자신의 글만, 비로그인은 자신의 일반 글만 */}
                       {((session && comment.isAdmin) ||
                         (!session && !comment.isAdmin)) && (
                         <button onClick={() => handleAction(comment, 'edit')}>
                           수정
                         </button>
                       )}
+                      {/* 삭제 버튼은 관리자는 모든 글, 비로그인은 자신의 일반 글만 */}
                       {(session || (!session && !comment.isAdmin)) && (
                         <button onClick={() => handleAction(comment, 'delete')}>
                           삭제

@@ -149,13 +149,26 @@ export async function PATCH(req) {
       );
     }
 
-    // 관리자 댓글은 관리자만 수정 가능
-    if (comment.isAdmin && !updateData.isAdmin) {
-      return NextResponse.json({ message: '권한이 없습니다' }, { status: 403 });
+    // 관리자가 수정하는 경우
+    if (updateData.isAdmin) {
+      // 관리자는 자신의 댓글만 수정 가능
+      if (!comment.isAdmin) {
+        return NextResponse.json(
+          { message: '관리자 댓글만 수정할 수 있습니다' },
+          { status: 403 },
+        );
+      }
     }
+    // 비로그인 사용자가 수정하는 경우
+    else if (updateData.password) {
+      // 관리자 댓글은 수정 불가
+      if (comment.isAdmin) {
+        return NextResponse.json(
+          { message: '권한이 없습니다' },
+          { status: 403 },
+        );
+      }
 
-    // 비로그인 사용자는 비밀번호 확인
-    if (!comment.isAdmin && updateData.password) {
       const isPasswordValid = await bcrypt.compare(
         updateData.password,
         comment.password,
