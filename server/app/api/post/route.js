@@ -21,8 +21,17 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
     // limit 값이 없으면 null 반환 (전체 게시글 조회)
     const limit = parseInt(searchParams.get('limit')) || null;
+    const categoryId = searchParams.get('categoryId');
 
-    let query = Post.find()
+    // 기본 쿼리 조건
+    let queryConditions = {};
+
+    // categoryId가 있는 경우 쿼리 조건에 추가
+    if (categoryId) {
+      queryConditions.categoryId = categoryId;
+    }
+
+    let query = Post.find(queryConditions)
       .sort({ createdAt: -1 }) // 최신순 정렬
       .populate('categoryId', 'name')
       .populate('likes')
