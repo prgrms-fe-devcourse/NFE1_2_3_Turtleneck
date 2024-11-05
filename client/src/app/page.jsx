@@ -132,8 +132,10 @@ export default function Home() {
           </div>
         </div>
 
+        <div className={styles.feed_name}>Feed</div>
         {/* 콘텐츠 컨테이너 */}
         <div className={styles.contentContainer}>
+        
           {/* 필터 섹션 */}
           <aside className={styles.filterSection}>
             <div className={styles.filterHeader}>
@@ -145,7 +147,7 @@ export default function Home() {
           {/* 피드 섹션 */}
           <section className={styles.feedSection}>
             <div className={styles.feedHeader}>
-              <h2 className={styles.feedTitle}>/Feed</h2>
+              <h2 className={styles.feedTitle}>/Post</h2>
             </div>
             <div className={styles.grid}>
               <PostCardsList />
