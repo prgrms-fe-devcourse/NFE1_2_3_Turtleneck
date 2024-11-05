@@ -15,7 +15,6 @@ export default function write() {
   const router = useRouter();
 
   //ORIGIN DATA
-  const postId = params.id;
   const [originTitle, setOriginTitle] = useState('');
 
   //FORM DATA BASE

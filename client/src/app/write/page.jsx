@@ -84,22 +84,13 @@ export default function write() {
     }
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files?.[0] || null;
-    if (file) {
-      setImage(file); // 파일 객체를 상태에 설정
-    } else {
-      setImage(null); // 파일이 없을 경우 상태 초기화
-    }
-  };
-
   const imgReset = () => {
     if (imgRef.current) {
       imgRef.current.value = '';
     }
   };
 
-  //파일 업로드
+  //에디터 파일 업로드
   const handleImageUpload = async (file) => {
     const formData = new FormData();
     formData.append('file', file);
@@ -118,11 +109,36 @@ export default function write() {
     }
   };
 
+  //대표이미지 파일 업로드
+  const handleDefaultImageUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    // 파일 객체를 상태에 설정
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('filename', file.name); // 파일 이름 추가
+
+    try {
+      // 이미지 파일을 서버로 업로드
+      const response = await uploadApi.createFile(formData);
+
+      // 서버에서 반환한 이미지 URL 사용
+      const imageUrl = response.url;
+      setImage(imageUrl);
+
+      return imageUrl;
+    } catch (error) {
+      console.error('Image upload failed: ', error);
+      return '';
+    }
+  };
+
   //submit 요청보내기
   const onSubmitHandler = async (e) => {
     e.preventDefault();
 
-    setFormTag(tagsData);
+    console.log(image);
 
     if (!formTitle.trim()) {
       alert('내용을 입력하세요.');
@@ -134,7 +150,7 @@ export default function write() {
         title: formTitle,
         tags: formTag, // 태그 배열
         content: formText,
-        mainImage: image, // 이미지 파일
+        mainImage: image, // 이미지 주소
       });
 
       // 성공적으로 추가된 경우 리다이렉트
@@ -236,7 +252,7 @@ export default function write() {
                         className={styles.file_input_button}
                         type="file"
                         accept="image/jpg, image/jpeg, image/png"
-                        onChange={handleFileChange}
+                        onChange={handleDefaultImageUpload}
                         name="file"
                         id="file"
                         ref={imgRef}
