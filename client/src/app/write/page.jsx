@@ -84,15 +84,6 @@ export default function write() {
     }
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files?.[0] || null;
-    if (file) {
-      setImage(file); // 파일 객체를 상태에 설정
-    } else {
-      setImage(null); // 파일이 없을 경우 상태 초기화
-    }
-  };
-
   const imgReset = () => {
     if (imgRef.current) {
       imgRef.current.value = '';
