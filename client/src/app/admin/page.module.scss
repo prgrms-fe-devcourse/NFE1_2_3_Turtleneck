@@ -2,11 +2,21 @@
     background-color: white;
     min-height: 100vh;
     padding: 40px;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: 400;
   }
   
   .container {
     max-width: 1200px;
     margin: 0 auto;
+  }
+
+  .back_button {
+    margin-bottom: 48px;
+  }
+  
+  .arrow_icon {
+    cursor: pointer;
   }
   
   .header {
@@ -55,11 +65,6 @@
     color: #666;
   }
   
-  .topic_item.active {
-    background-color: rgb(240, 255, 244);
-    color: rgb(0, 183, 47);
-  }
-  
   .topic_radio {
     width: 16px;
     height: 16px;
@@ -71,19 +76,24 @@
   }
   
   .topic_item.active .topic_radio {
-    border-color: rgb(0, 183, 47);
+    border-color: #2ed3b7;
   }
   
   .radio_inner {
     width: 8px;
     height: 8px;
-    background-color: rgb(0, 183, 47);
+    background-color: #2ed3b7;
     border-radius: 50%;
   }
   
   .topic_text {
     font-size: 13px;
     font-weight: 500;
+  }
+
+  .topic_item.active .topic_text {
+    background-color: #2ed3b7;
+    padding: 2px;
   }
   
   .topic_item:first-child .material_icons {

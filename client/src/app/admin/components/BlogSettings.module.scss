@@ -1,162 +1,234 @@
 .content {
-    max-width: 800px;
-  }
-  
-  .setting_list {
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-    margin-bottom: 60px;
-  }
-  
-  .setting_item {
-    position: relative;
-  }
-  
-  .setting_label {
-    font-size: 13px;
-    font-weight: 500;
-    color: #111;
-    margin-bottom: 12px;
-  }
-  
-  .setting_value {
-    width: 100%;
-    font-size: 14px;
-    color: #666;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .setting_input {
-    width: 100%;
-    font-size: 14px;
-    padding: 8px 0;
-    border: none;
-    border-bottom: 1px solid #eee;
-    outline: none;
-    color: #666;
-  }
-  
-  .edit_button {
-    position: absolute;
-    top: -4px;
-    right: 0;
-  }
-  
-  .edit_button button {
-    padding: 6px 20px;
-    border: 1px solid #eee;
-    border-radius: 20px;
-    background: white;
-    font-size: 12px;
-    color: #666;
-    cursor: pointer;
-  }
-  
-  .category_section {
-    margin-top: 60px;
-  }
-  
-  .category_header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-  }
-  
-  .category_title {
-    font-size: 13px;
-    font-weight: 500;
-    color: #111;
-  }
-  
-  .add_button {
-    width: 24px;
-    height: 24px;
-    border: 1px solid #eee;
-    background: white;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: #666;
-    font-size: 18px;
-  }
-  
-  .category_list {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .category_item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 0;
-    border-bottom: 1px solid #eee;
-  }
-  
-  .category_item span {
-    font-size: 14px;
-    color: #333;
-  }
-  
-  .category_item input {
-    width: 100%;
-    font-size: 14px;
-    border: none;
-    border-bottom: 1px solid #eee;
-    outline: none;
-    padding: 4px 0;
-  }
-  
-  .category_buttons {
-    display: flex;
-    gap: 16px;
-  }
-  
-  .category_buttons button {
-    background: none;
-    border: none;
-    font-size: 12px;
-    color: #666;
-    cursor: pointer;
-    text-transform: uppercase;
-  }
-  
-  .form_buttons {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-    margin-top: 16px;
-  }
-  
-  .form_buttons button {
-    padding: 6px 16px;
-    border: 1px solid #eee;
-    border-radius: 4px;
-    background: white;
-    font-size: 12px;
-    color: #666;
-    cursor: pointer;
-    text-transform: uppercase;
-  }
-  
-  .button_group {
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-  }
-  
-  .button_group button {
-    padding: 6px 16px;
-    border: 1px solid #eee;
-    border-radius: 4px;
-    background: white;
-    font-size: 12px;
-    color: #666;
-    cursor: pointer;
-    text-transform: uppercase;
-  }
+  max-width: 800px;
+}
+
+.setting_header {
+  font-size: 12px;
+  color: #666;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 40px;
+}
+
+.setting_list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin-bottom: 60px;
+  height: 216px;
+}
+
+.setting_item {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 48px;
+  height: 32px;
+}
+
+.setting_label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #111;
+  display: flex;
+  align-items: center;
+}
+
+.setting_label::before {
+  content: "■";
+  font-size: 8px;
+  margin-right: 8px;
+  color: #111;
+}
+
+.setting_value {
+  font-size: 13px;
+  color: #666;
+  padding: 8px 0; 
+  border-bottom: 1px solid #eee;
+  line-height: 1;
+  height: 32px; 
+  display: flex;
+  align-items: center; 
+}
+.setting_input {
+  width: 100%;
+  font-size: 13px;
+  padding: 8px 0;
+  border: none;
+  border-bottom: 1px solid #eee;
+  outline: none;
+  color: #666;
+  line-height: 1; 
+  height: 32px; 
+  font-family: 'Pretendard', sans-serif;
+  font-weight: 400;
+}
+
+.edit_button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.edit_button button {
+  padding: 6px 24px;
+  border: 1px solid #000000;
+  background: white;
+  font-size: 13px;
+  color: #000000;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.button_group {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  gap: 12px;
+}
+
+.button_group button {
+  padding: 6px 24px;
+  border: 1px solid #000000;
+  background: #fff;
+  font-size: 13px;
+  color: #000000;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.category_section {
+  margin-top: 60px;
+}
+
+.category_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 0;
+}
+
+.category_title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #111;
+  display: flex;
+  align-items: center;
+}
+
+.category_title::before {
+  content: "■";
+  font-size: 8px;
+  margin-right: 8px;
+  color: #111;
+}
+
+.add_button {
+  font-size: 18px;
+  color: #666;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.category_list {
+  display: flex;
+  flex-direction: column;
+}
+
+.category_item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.category_item span {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111;
+}
+
+.category_item input {
+  font-size: 14px;
+  border: 1px dashed #ddd; 
+  outline: none;
+  padding: 8px;  
+  color: #111;
+  width: 100%;
+  background-color: #fff;  
+}
+
+.category_item:has(input) {
+  background-color: #f9f9f9;  
+  margin: 0 -12px;  
+  padding: 14px 12px;  
+}
+
+.category_buttons {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.category_buttons button {
+  font-size: 11px;
+  color: #666;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 8px;
+  text-transform: uppercase;
+}
+
+.category_buttons button:first-child {
+  border-right: 1px solid #eee;
+}
+
+.form_buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0;
+  margin-top: 8px;
+}
+
+.form_buttons button {
+  font-size: 11px;
+  color: #666;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 8px;
+  text-transform: uppercase;
+}
+
+.form_buttons button:first-child {
+  border-right: 1px solid #eee;
+}
+
+.category_form {
+  padding: 14px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.category_form input {
+  width: 100%;
+  font-size: 14px;
+  border: none;
+  border-bottom: 1px solid #eee;
+  outline: none;
+  padding: 0;
+  color: #111;
+}
