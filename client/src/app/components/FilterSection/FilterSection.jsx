@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import styles from './FilterSection.module.scss';
 import { categoryApi } from '@/utils/api';
+import chevronIcon from '@/app/assets/imgs/chevron.png';
+import folderIcon from '@/app/assets/imgs/folder.png';
+import Image from 'next/image';
 
 const FilterSection = ({ onFilterChange }) => {
   const [categories, setCategories] = useState([]);
@@ -52,41 +55,87 @@ const FilterSection = ({ onFilterChange }) => {
 
   return (
     <div className={styles.filterBox}>
-      <div className={styles.categorySection}>
-        <h3 className={styles.sectionTitle}>Category</h3>
-        <div className={styles.categoryList}>
-          {categories.map((category) => (
-            <button
-              key={category._id}
-              className={`${styles.categoryButton} ${
-                selectedCategory === category._id ? styles.active : ''
-              }`}
-              onClick={() => handleCategoryClick(category._id)}
-            >
-              <span>■</span> {category.name}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {selectedCategory && availableTags.length > 0 && (
-        <div className={styles.tagSection}>
-          <h3 className={styles.sectionTitle}>Tags</h3>
-          <div className={styles.tagList}>
-            {availableTags.map((tag) => (
-              <button
-                key={tag}
-                className={`${styles.tagButton} ${
-                  selectedTags.includes(tag) ? styles.active : ''
-                }`}
-                onClick={() => handleTagClick(tag)}
-              >
-                #{tag}
-              </button>
-            ))}
+      <div className={styles.filtersContainer}>
+        {/* Category 섹션 */}
+        <div className={styles.filterColumn}>
+          <h3 className={styles.sectionTitle}>
+            <Image
+              src={chevronIcon}
+              alt="chevron"
+              className={styles.chevronIcon}
+              width={24}
+              height={24}
+            />
+            <Image
+              src={folderIcon}
+              alt="folder"
+              className={styles.folderIcon}
+              width={24}
+              height={24}
+            />
+            Category
+          </h3>
+          <div className={styles.listContainer}>
+            <div className={styles.verticalDottedLine} />
+            <div className={styles.categoryList}>
+              {categories.map((category) => (
+                <label key={category._id} className={styles.checkboxLabel}>
+                  <input
+                    type="checkbox"
+                    checked={selectedCategory === category._id}
+                    onChange={() => handleCategoryClick(category._id)}
+                    className={styles.checkbox}
+                  />
+                  <div className={styles.labelText}>{category.name}</div>
+                </label>
+              ))}
+            </div>
           </div>
         </div>
-      )}
+
+        {/* Tag 섹션 */}
+        <div className={styles.filterColumn}>
+          <h3 className={styles.sectionTitle}>
+            <Image
+              src={chevronIcon}
+              alt="chevron"
+              className={styles.chevronIcon}
+              width={24}
+              height={24}
+            />
+            <Image
+              src={folderIcon}
+              alt="folder"
+              className={styles.folderIcon}
+              width={24}
+              height={24}
+            />
+            Tag
+          </h3>
+          <div className={styles.listContainer}>
+            <div className={styles.verticalDottedLine} />
+            <div className={styles.tagList}>
+              {availableTags.length > 0 ? (
+                availableTags.map((tag) => (
+                  <label key={tag} className={styles.checkboxLabel}>
+                    <input
+                      type="checkbox"
+                      checked={selectedTags.includes(tag)}
+                      onChange={() => handleTagClick(tag)}
+                      className={styles.checkbox}
+                    />
+                    <div className={styles.labelText}>{tag}</div>
+                  </label>
+                ))
+              ) : (
+                <p className={styles.noTags}>
+                  카테고리를 선택하면 태그가 표시됩니다
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

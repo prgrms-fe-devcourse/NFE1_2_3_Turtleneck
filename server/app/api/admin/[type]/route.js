@@ -1,4 +1,3 @@
-// server/app/api/admin/[type]/route.js
 import dbConnect from '@/app/db/dbConnect';
 import Auth from '@/app/db/models/auth';
 import { NextResponse } from 'next/server';
