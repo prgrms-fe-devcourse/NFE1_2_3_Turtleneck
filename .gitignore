@@ -30,3 +30,10 @@ yarn-error.log*
 .env
 .env.*
 !.env.example
+
+# dist file
+server/app/db/models/dist
+server/app/api/upload/dist
+.dev.js
+client/src/app/write/dist/write.module.css
+server/app/api/post/dist/route.dev.js

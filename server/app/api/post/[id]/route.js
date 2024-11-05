@@ -35,7 +35,7 @@ export async function PATCH(req) {
     const content = formData.get('content');
     const categoryId = formData.get('categoryId');
     const mainImage = formData.get('mainImage');
-    const tags = formData.get('tags');
+    const tags = formData.getAll('tags');
 
     const updatedPost = await Post.findByIdAndUpdate(
       id,

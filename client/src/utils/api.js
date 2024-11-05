@@ -58,6 +58,16 @@ export const authApi = {
   },
 };
 
+//파일 업로드 기능
+export const uploadApi = {
+  createFile: async (formData) => {
+    return fetchApimulti('/api/upload', {
+      method: 'POST',
+      body: formData,
+    });
+  },
+};
+
 export const postApi = {
   // 최신 게시글 조회
   getRecentPosts: async (limit = 2) => {
