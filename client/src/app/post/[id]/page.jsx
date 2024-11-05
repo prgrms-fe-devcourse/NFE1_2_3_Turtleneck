@@ -5,6 +5,7 @@ import { postApi } from '@/utils/api';
 import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js/lib/core';
 import mdHighlightjs from 'markdown-it-highlightjs';
+import mdCheckbox from 'markdown-it-task-lists';
 import 'highlight.js/styles/github.css';
 import styles from './post.module.scss';
 import CopyLinkButton from '../components/CopyLinkButton';
@@ -12,6 +13,7 @@ import LikeButton from '../components/LikeButton';
 import Navigation from '@/app/components/navigation';
 import { useSession } from 'next-auth/react';
 import Comments from '../components/comments';
+import Footer from '@/app/components/Footer';
 
 // 필요한 언어 등록 (예: JavaScript, Python 등)
 hljs.registerLanguage(
@@ -23,7 +25,7 @@ hljs.registerLanguage('python', require('highlight.js/lib/languages/python'));
 // MarkdownIt 인스턴스 생성 및 하이라이팅 플러그인 설정
 const md = new MarkdownIt();
 md.use(mdHighlightjs, { auto: true, hljs }); // auto 옵션을 통해 언어 자동 감지
-
+md.use(mdCheckbox, { enabled: true, label: true, labelAfter: true });
 export default function PostDetail() {
   const [post, setPost] = useState(null);
   const [error, setError] = useState(null);
@@ -133,6 +135,10 @@ export default function PostDetail() {
         <div className={styles.comments_section}>
           <Comments postId={params.id} />
         </div>
+      </div>
+
+      <div className={styles.footer}>
+        <Footer />
       </div>
     </div>
   );
