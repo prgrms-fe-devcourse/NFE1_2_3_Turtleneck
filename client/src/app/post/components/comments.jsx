@@ -4,6 +4,9 @@ import { useState, useEffect, useRef } from 'react';
 import { useSession } from 'next-auth/react';
 import styles from './CommentSection.module.scss';
 import { commentApi } from '@/utils/api';
+import dotsHorizontal from '@/app/assets/imgs/dots-horizontal.png';
+import messageSquare from '@/app/assets/imgs/message-square.png';
+import Image from 'next/image';
 
 export default function Comments({ postId }) {
   const { data: session } = useSession();
@@ -37,11 +40,12 @@ export default function Comments({ postId }) {
     fetchComments();
   }, [postId]);
 
+  // 액션 메뉴 외부 클릭 처리
   useEffect(() => {
     function handleClickOutside(event) {
       if (
-        actionMenuRef.current &&
-        !actionMenuRef.current.contains(event.target)
+        showActionMenu &&
+        !event.target.closest(`.${styles.comment_actions}`)
       ) {
         setShowActionMenu(null);
       }
@@ -51,7 +55,7 @@ export default function Comments({ postId }) {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [showActionMenu]);
 
   // 날짜 포맷팅
   const formatDate = (dateString) => {
@@ -142,25 +146,33 @@ export default function Comments({ postId }) {
   const handlePasswordSubmit = async () => {
     try {
       if (actionType === 'edit') {
+        // 기존 updateComment 함수를 사용하여 비밀번호 검증
+        await commentApi.updateComment(selectedComment, {
+          password: passwordInput,
+        });
+
+        // 비밀번호가 맞으면 수정 모드로 전환
         const comment = comments.find((c) => c._id === selectedComment);
-        await handleEdit(selectedComment, passwordInput);
+        setIsEditing(selectedComment);
+        setEditContent(comment.content);
         setShowPasswordModal(false);
       } else if (actionType === 'delete') {
         await handleDelete(selectedComment, passwordInput);
         setShowPasswordModal(false);
       }
-    } catch (error) {
       setPasswordInput('');
-      alert(error.message);
+    } catch (error) {
+      alert(error.message || '비밀번호가 일치하지 않습니다.');
+      setPasswordInput('');
     }
   };
 
   // 댓글 수정
-  const handleEdit = async (commentId, password = null) => {
+  const handleEdit = async (commentId) => {
     try {
       await commentApi.updateComment(commentId, {
         content: editContent,
-        password: password,
+        isAdmin: session ? true : false,
       });
 
       setIsEditing(null);
@@ -168,7 +180,8 @@ export default function Comments({ postId }) {
       const updatedData = await commentApi.getComments(postId);
       setComments(updatedData);
     } catch (error) {
-      throw error;
+      alert(error.message || '댓글 수정에 실패했습니다.');
+      setIsEditing(null);
     }
   };
 
@@ -186,7 +199,10 @@ export default function Comments({ postId }) {
 
   return (
     <div className={styles.comments_section}>
-      <div className={styles.section_name}>/ COMMENTS 💬</div>
+      <div className={styles.section_name}>
+        <span>/ COMMENTS</span>
+        <Image src={messageSquare} alt="comments" width={20} height={20} />
+      </div>
 
       <form onSubmit={handleSubmit} className={styles.comment_form}>
         {!session && (
@@ -260,7 +276,7 @@ export default function Comments({ postId }) {
               (session && comment.isAdmin) ||
                 (!session && !comment.isAdmin) ||
                 (session && !comment.isAdmin) ? (
-                <div className={styles.comment_actions} ref={actionMenuRef}>
+                <div className={styles.comment_actions}>
                   <button
                     className={styles.action_button}
                     onClick={(e) => {
@@ -270,17 +286,24 @@ export default function Comments({ postId }) {
                       );
                     }}
                   >
-                    ⚙️
+                    <Image
+                      src={dotsHorizontal}
+                      alt="actions"
+                      width={20}
+                      height={20}
+                      className={styles.dots_icon}
+                    />
                   </button>
                   {showActionMenu === comment._id && (
                     <div className={styles.action_menu}>
-                      {/* 나머지 버튼들은 그대로 */}
+                      {/* 수정 버튼은 관리자의 경우 자신의 글만, 비로그인은 자신의 일반 글만 */}
                       {((session && comment.isAdmin) ||
                         (!session && !comment.isAdmin)) && (
                         <button onClick={() => handleAction(comment, 'edit')}>
                           수정
                         </button>
                       )}
+                      {/* 삭제 버튼은 관리자는 모든 글, 비로그인은 자신의 일반 글만 */}
                       {(session || (!session && !comment.isAdmin)) && (
                         <button onClick={() => handleAction(comment, 'delete')}>
                           삭제
