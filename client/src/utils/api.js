@@ -268,4 +268,17 @@ export const adminApi = {
       body: JSON.stringify({ [type]: value }),
     });
   },
+
+  // 관리자 권한 댓글 불러오기
+  getAllComments: () => {
+    return fetchApi('/api/admin/comments');
+  },
+
+  // 관리자 권한 댓글 삭제
+  deleteComment: (commentId) => {
+    return fetchApi(`/api/comment/${commentId}`, {
+      method: 'DELETE',
+      body: JSON.stringify({ isAdmin: true }),
+    });
+  },
 };
