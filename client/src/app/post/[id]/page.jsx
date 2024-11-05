@@ -1,5 +1,3 @@
-// client/src/app/post/[id]/page.jsx
-
 'use client';
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation'; // URL에서 ID 가져오기
@@ -13,6 +11,7 @@ import CopyLinkButton from '../components/CopyLinkButton';
 import LikeButton from '../components/LikeButton';
 import Navigation from '@/app/components/navigation';
 import { useSession } from 'next-auth/react';
+import Comments from '../components/comments';
 
 // 필요한 언어 등록 (예: JavaScript, Python 등)
 hljs.registerLanguage(
@@ -131,6 +130,9 @@ export default function PostDetail() {
           initialIsLiked={post.isLikedByUser}
           LikesArray={post.likes}
         />
+        <div className={styles.comments_section}>
+          <Comments postId={params.id} />
+        </div>
       </div>
     </div>
   );
