@@ -25,6 +25,9 @@
 }
 
 .description {
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-width: 50ch; /* 25자 기준으로 자동 줄바꿈 되도록 너비 설정 */
   margin-top: 1rem;
   color: #4b5563;
   font-size: 20px;
