@@ -82,6 +82,7 @@
 
 /* 필터 섹션 */
 .filterSection {
+  min-width: 288px;
   width: 340px;
   border-radius: 8px;
   height: calc(100% -30px); /* Feed 영역의 높이와 동일하게 설정 */

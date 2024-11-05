@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import BlogSettings from './components/BlogSettings';
 import Comments from './components/Comments';
+import CategorySettings from './components/CategorySettings';
 import styles from './page.module.scss';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -14,16 +15,16 @@ export default function AdminPage() {
     router.back();
   };
 
-  const [selectedTopic, setSelectedTopic] = useState('Names & Category');
+  const [selectedTopic, setSelectedTopic] = useState('Blog Info');
 
   const renderContent = () => {
     switch (selectedTopic) {
-      case 'Names & Category':
+      case 'Blog Info':
         return <BlogSettings />;
       case 'Comments':
         return <Comments />;
-      case 'Sections':
-        return <div>섹션 관리 기능 구현 예정</div>;
+      case 'Category':
+        return <CategorySettings />;
       default:
         return <BlogSettings />;
     }
@@ -49,17 +50,33 @@ export default function AdminPage() {
           <div className={styles.filters}>
             <div className={styles.filter_label}>/ FILTERS</div>
             <div className={styles.topic_list}>
+              {/* Blog Info 메뉴 */}
               <div
-                className={`${styles.topic_item} ${selectedTopic === 'Names & Category' ? styles.active : ''}`}
-                onClick={() => setSelectedTopic('Names & Category')}
+                className={`${styles.topic_item} ${selectedTopic === 'Blog Info' ? styles.active : ''}`}
+                onClick={() => setSelectedTopic('Blog Info')}
               >
                 <div className={styles.topic_radio}>
-                  {selectedTopic === 'Names & Category' && (
+                  {selectedTopic === 'Blog Info' && (
                     <div className={styles.radio_inner} />
                   )}
                 </div>
-                <span className={styles.topic_text}>Names & Category</span>
+                <span className={styles.topic_text}>Blog Info</span>
               </div>
+
+              {/* Category 메뉴 */}
+              <div
+                className={`${styles.topic_item} ${selectedTopic === 'Category' ? styles.active : ''}`}
+                onClick={() => setSelectedTopic('Category')}
+              >
+                <div className={styles.topic_radio}>
+                  {selectedTopic === 'Category' && (
+                    <div className={styles.radio_inner} />
+                  )}
+                </div>
+                <span className={styles.topic_text}>Category</span>
+              </div>
+
+              {/* Comments 메뉴 */}
               <div
                 className={`${styles.topic_item} ${selectedTopic === 'Comments' ? styles.active : ''}`}
                 onClick={() => setSelectedTopic('Comments')}
@@ -70,17 +87,6 @@ export default function AdminPage() {
                   )}
                 </div>
                 <span className={styles.topic_text}>Comments</span>
-              </div>
-              <div
-                className={`${styles.topic_item} ${selectedTopic === 'Sections' ? styles.active : ''}`}
-                onClick={() => setSelectedTopic('Sections')}
-              >
-                <div className={styles.topic_radio}>
-                  {selectedTopic === 'Sections' && (
-                    <div className={styles.radio_inner} />
-                  )}
-                </div>
-                <span className={styles.topic_text}>Sections</span>
               </div>
             </div>
           </div>
