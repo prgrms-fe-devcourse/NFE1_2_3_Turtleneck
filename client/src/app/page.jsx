@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import { MainPostList } from './components/MainPostCard/MainPostCard';
 import PostCardsList from './components/PostCard/PostCard';
 import { adminApi, postApi } from '@/utils/api';
+import FilterSection from './components/FilterSection/FilterSection';
 
 const POSTS_PER_PAGE = 6;
 
@@ -14,11 +15,27 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const [posts, setPosts] = useState([]);
   const [totalPosts, setTotalPosts] = useState(0);
+  const [filteredPosts, setFilteredPosts] = useState([]);
   const [adminSettings, setAdminSettings] = useState({
     nickname: '',
     blogTitle: '',
     blogInfo: '',
   });
+
+  // 필터 변경 핸들러 추가
+  const handleFilterChange = ({ categoryId, tags }) => {
+    const newFilteredPosts = posts.filter((post) => {
+      const matchesCategory =
+        !categoryId || post.categoryId?._id === categoryId;
+      const matchesTags =
+        tags.length === 0 || tags.every((tag) => post.tags?.includes(tag));
+      return matchesCategory && matchesTags;
+    });
+
+    setFilteredPosts(newFilteredPosts);
+    setTotalPosts(newFilteredPosts.length);
+    setCurrentPage(1);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,6 +53,7 @@ export default function Home() {
 
         const allPosts = Array.isArray(postsResponse) ? postsResponse : [];
         setPosts(allPosts);
+        setFilteredPosts(allPosts); // 초기 필터링된 posts 설정
         setTotalPosts(allPosts.length);
       } catch (error) {
         console.error('데이터를 불러오는데 실패했습니다:', error);
@@ -52,7 +70,7 @@ export default function Home() {
   const getCurrentPagePosts = () => {
     const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
     const endIndex = startIndex + POSTS_PER_PAGE;
-    return posts.slice(startIndex, endIndex);
+    return filteredPosts.slice(startIndex, endIndex);
   };
 
   // 페이지네이션 렌더링 함수
@@ -78,14 +96,14 @@ export default function Home() {
           className={`${styles.pageButton} ${currentPage === 1 ? styles.active : ''}`}
         >
           1
-        </button>
+        </button>,
       );
 
       if (displayPages[0] > 2) {
         pages.push(
           <span key="ellipsis1" className={styles.ellipsis}>
             ...
-          </span>
+          </span>,
         );
       }
     }
@@ -101,7 +119,7 @@ export default function Home() {
           }`}
         >
           {pageNum}
-        </button>
+        </button>,
       );
     });
 
@@ -111,7 +129,7 @@ export default function Home() {
         pages.push(
           <span key="ellipsis2" className={styles.ellipsis}>
             ...
-          </span>
+          </span>,
         );
       }
 
@@ -124,7 +142,7 @@ export default function Home() {
           }`}
         >
           {totalPages}
-        </button>
+        </button>,
       );
     }
 
@@ -163,10 +181,10 @@ export default function Home() {
             <div className={styles.filterHeader}>
               <h2 className={styles.filterTitle}>/Filter</h2>
             </div>
-            <div className={styles.filterBox}></div>
+            <FilterSection onFilterChange={handleFilterChange} />
           </aside>
 
-          {/* 피드 섹션 */}
+          {/* 피드 섹션 - 필터링된 posts 사용 */}
           <section className={styles.feedSection}>
             <div className={styles.feedHeader}>
               <h2 className={styles.feedTitle}>/Post</h2>
