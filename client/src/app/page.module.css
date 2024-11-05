@@ -28,7 +28,7 @@
 
 .description {
   white-space: pre-wrap;
-  word-break: break-word;
+  word-break: keep-all;
   max-width: 50ch; /* 25자 기준으로 자동 줄바꿈 되도록 너비 설정 */
   margin-top: 1rem;
   color: #4b5563;
@@ -73,7 +73,7 @@
   min-height: 600px;
 }
 
-.feed_name{
+.feed_name {
   font-family: 'Pretendard', sans-serif;
   font-weight: 500;
   font-size: 112px;
@@ -82,7 +82,7 @@
 
 /* 필터 섹션 */
 .filterSection {
-  width: 300px;
+  width: 340px;
   border-radius: 8px;
   height: calc(100% -30px); /* Feed 영역의 높이와 동일하게 설정 */
 }
@@ -105,6 +105,7 @@
 .feedSection {
   width: 100%;
   min-height: 900px;
+  max-width: 901px;
 }
 
 .feedHeader {
@@ -121,9 +122,9 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   grid-auto-rows: auto;
-  gap: 32px;
+  gap: 32px 0;
   width: 100%;
   box-sizing: border-box;
 }
