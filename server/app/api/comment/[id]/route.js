@@ -136,11 +136,6 @@ export async function PATCH(req) {
     const id = pathname.split('/').pop();
     const updateData = await req.json();
 
-    // 내용 수정 시 검사
-    if (updateData.content) {
-      validateContent(updateData.content);
-    }
-
     const comment = await Comment.findById(id);
     if (!comment) {
       return NextResponse.json(
@@ -160,7 +155,7 @@ export async function PATCH(req) {
       }
     }
     // 비로그인 사용자가 수정하는 경우
-    else if (updateData.password) {
+    else {
       // 관리자 댓글은 수정 불가
       if (comment.isAdmin) {
         return NextResponse.json(
@@ -169,27 +164,34 @@ export async function PATCH(req) {
         );
       }
 
-      const isPasswordValid = await bcrypt.compare(
-        updateData.password,
-        comment.password,
-      );
-
-      if (!isPasswordValid) {
-        return NextResponse.json(
-          { message: '비밀번호가 일치하지 않습니다' },
-          { status: 401 },
+      // 비밀번호 검증 요청인 경우
+      if (updateData.password && !updateData.content) {
+        const isPasswordValid = await bcrypt.compare(
+          updateData.password,
+          comment.password,
         );
+
+        if (!isPasswordValid) {
+          return NextResponse.json(
+            { message: '비밀번호가 일치하지 않습니다' },
+            { status: 401 },
+          );
+        }
+
+        return NextResponse.json({ message: '비밀번호가 확인되었습니다' });
       }
     }
 
-    // 비밀번호 필드는 업데이트에서 제외
-    const { password, ...updateFields } = updateData;
-
-    const updatedComment = await Comment.findByIdAndUpdate(id, updateFields, {
-      new: true,
-    });
-
-    return NextResponse.json(updatedComment);
+    // content 업데이트 요청인 경우
+    if (updateData.content) {
+      validateContent(updateData.content);
+      const updatedComment = await Comment.findByIdAndUpdate(
+        id,
+        { content: updateData.content },
+        { new: true },
+      );
+      return NextResponse.json(updatedComment);
+    }
   } catch (error) {
     console.error('Error updating comment:', error);
     return NextResponse.json({ message: error.message }, { status: 400 });

@@ -4,6 +4,9 @@ import { useState, useEffect, useRef } from 'react';
 import { useSession } from 'next-auth/react';
 import styles from './CommentSection.module.scss';
 import { commentApi } from '@/utils/api';
+import dotsHorizontal from '@/app/assets/imgs/dots-horizontal.png';
+import messageSquare from '@/app/assets/imgs/message-square.png';
+import Image from 'next/image';
 
 export default function Comments({ postId }) {
   const { data: session } = useSession();
@@ -34,24 +37,25 @@ export default function Comments({ postId }) {
       }
     };
 
-    useEffect(() => {
-      function handleClickOutside(event) {
-        if (
-          showActionMenu &&
-          !event.target.closest(`.${styles.comment_actions}`)
-        ) {
-          setShowActionMenu(null);
-        }
-      }
-
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }, [showActionMenu]);
-
     fetchComments();
   }, [postId]);
+
+  // 액션 메뉴 외부 클릭 처리
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        showActionMenu &&
+        !event.target.closest(`.${styles.comment_actions}`)
+      ) {
+        setShowActionMenu(null);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showActionMenu]);
 
   // 날짜 포맷팅
   const formatDate = (dateString) => {
@@ -142,28 +146,33 @@ export default function Comments({ postId }) {
   const handlePasswordSubmit = async () => {
     try {
       if (actionType === 'edit') {
+        // 기존 updateComment 함수를 사용하여 비밀번호 검증
+        await commentApi.updateComment(selectedComment, {
+          password: passwordInput,
+        });
+
+        // 비밀번호가 맞으면 수정 모드로 전환
         const comment = comments.find((c) => c._id === selectedComment);
-        setIsEditing(selectedComment); // 먼저 수정 모드로 전환
-        setEditContent(comment.content); // 내용 설정
-        setShowPasswordModal(false); // 모달 닫기
+        setIsEditing(selectedComment);
+        setEditContent(comment.content);
+        setShowPasswordModal(false);
       } else if (actionType === 'delete') {
         await handleDelete(selectedComment, passwordInput);
         setShowPasswordModal(false);
       }
-    } catch (error) {
       setPasswordInput('');
-      alert(error.message);
+    } catch (error) {
+      alert(error.message || '비밀번호가 일치하지 않습니다.');
+      setPasswordInput('');
     }
   };
 
   // 댓글 수정
-  const handleEdit = async (commentId, password = null) => {
+  const handleEdit = async (commentId) => {
     try {
-      // 관리자 로그인 상태와 일반 사용자를 구분
       await commentApi.updateComment(commentId, {
         content: editContent,
-        password: password,
-        isAdmin: session ? true : false, // 추가: 관리자 여부 전달
+        isAdmin: session ? true : false,
       });
 
       setIsEditing(null);
@@ -171,7 +180,8 @@ export default function Comments({ postId }) {
       const updatedData = await commentApi.getComments(postId);
       setComments(updatedData);
     } catch (error) {
-      throw error;
+      alert(error.message || '댓글 수정에 실패했습니다.');
+      setIsEditing(null);
     }
   };
 
@@ -189,7 +199,10 @@ export default function Comments({ postId }) {
 
   return (
     <div className={styles.comments_section}>
-      <div className={styles.section_name}>/ COMMENTS 💬</div>
+      <div className={styles.section_name}>
+        <span>/ COMMENTS</span>
+        <Image src={messageSquare} alt="comments" width={20} height={20} />
+      </div>
 
       <form onSubmit={handleSubmit} className={styles.comment_form}>
         {!session && (
@@ -273,7 +286,13 @@ export default function Comments({ postId }) {
                       );
                     }}
                   >
-                    ⚙️
+                    <Image
+                      src={dotsHorizontal}
+                      alt="actions"
+                      width={20}
+                      height={20}
+                      className={styles.dots_icon}
+                    />
                   </button>
                   {showActionMenu === comment._id && (
                     <div className={styles.action_menu}>
