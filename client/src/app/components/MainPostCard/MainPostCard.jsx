@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import styles from './MainPostCard.module.scss';
-import { postApi } from '@/utils/api';
+import { postApi, adminApi } from '@/utils/api';
 
 const MainPostCard = ({ post }) => {
   // 기본 이미지 경로 설정
@@ -67,22 +67,31 @@ const MainPostList = () => {
   const [loading, setLoading] = useState(true); // 로딩 상태
   const [error, setError] = useState(null); // 에러 상태
 
-  // 컴포넌트 마운트 시 최신 게시물 2개 불러오기
-  useEffect(() => {
-    const fetchRecentPosts = async () => {
-      try {
-        // postApi를 통해 최신 게시물 2개 요청
-        const response = await postApi.getRecentPosts(2);
-        // 응답이 배열인지 확인 후 상태 업데이트
-        setPosts(Array.isArray(response) ? response : []);
-      } catch (err) {
-        console.error('Error fetching posts:', err);
-        setError('게시물을 불러오는데 실패했습니다.');
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchRecentPosts = async () => {
+    try {
+      // 먼저 관리자 설정을 가져와서 선택된 카테고리 확인
+      const adminResponse = await adminApi.getAdminSettings();
+      const selectedCategoryId = adminResponse.admin.mainPostCategoryId;
 
+      let response;
+      if (selectedCategoryId) {
+        // 선택된 카테고리가 있으면 해당 카테고리의 포스트만 가져오기
+        response = await postApi.getRecentPosts(2, selectedCategoryId);
+      } else {
+        // 선택된 카테고리가 없으면 최신 포스트 가져오기
+        response = await postApi.getRecentPosts(2);
+      }
+
+      setPosts(Array.isArray(response) ? response : []);
+    } catch (err) {
+      console.error('Error fetching posts:', err);
+      setError('게시물을 불러오는데 실패했습니다.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchRecentPosts();
   }, []);
 

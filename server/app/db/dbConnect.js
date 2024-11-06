@@ -1,13 +1,11 @@
-// src/db/connect.js
-
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 // MongoDB 연결 주소 가져오기
 const MONGODB_URI = process.env.MONGODB_URI;
 
 // 연결 주소 없으면 에러
 if (!MONGODB_URI) {
-  throw new Error("MONGODB_URI를 .env 파일에 정의해주세요");
+  throw new Error('MONGODB_URI를 .env 파일에 정의해주세요');
 }
 
 // mongoose 연결 상태 저장용 변수
