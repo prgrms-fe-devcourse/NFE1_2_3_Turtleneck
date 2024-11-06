@@ -1,6 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400');
+// @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400');
 
 .materialIcon {
     font-family: 'Material Symbols Outlined';
@@ -22,6 +22,7 @@
         '. comments'
         'footer footer';
     grid-template-columns: 1fr 3fr;
+    grid-auto-rows: minmax(0, auto); /* 행 높이 설정 */
     gap: 0 40px;
     margin: 0 auto;
     list-style-position: inside;
@@ -43,7 +44,7 @@
 }
 
 .section_name {
-    font-family: 'Inconsolata', serif;
+    font-family: 'Inconsolata';
     font-size: 12px;
     padding: 8px 0;
     border-bottom: 1px solid black;
@@ -52,6 +53,7 @@
 .aside_section {
     grid-area: aside;
     font-size: 12px;
+    align-self: start; /* 그리드 항목을 상단에 고정 */
 }
 
 .metadata_section {
@@ -93,10 +95,35 @@
     font-size: 12px;
 }
 
-.toc_item {
-    border-bottom: 0.5px dotted black;
-    padding: 12px 0;
+.toc_wrapper {
+    position: sticky;
+    top: 20px;
 }
+
+.toc_level_1 {
+    margin-left: 0;
+}
+
+.toc_level_2 {
+    margin-left: 10px;
+}
+
+.toc_level_3 {
+    margin-left: 20px;
+}
+
+.toc_level_4 {
+    margin-left: 30px;
+}
+
+.toc_level_5 {
+    margin-left: 40px;
+}
+
+.toc_level_6 {
+    margin-left: 50px;
+}
+
 
 .article_section {
     grid-area: article;
