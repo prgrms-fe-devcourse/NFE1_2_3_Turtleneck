@@ -18,7 +18,7 @@ const CopyLinkButton = () => {
 
   return (
     <button onClick={handleCopyLink} className={styles.btn_share_copy}>
-      <span className={styles.materialIcon}>content_copy</span>COPY LINK
+      COPY LINK
     </button>
   );
 };

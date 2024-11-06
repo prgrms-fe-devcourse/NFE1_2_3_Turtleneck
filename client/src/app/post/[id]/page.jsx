@@ -200,7 +200,7 @@ export default function PostDetail() {
           {/* 링크 복사 버튼 */}
           <CopyLinkButton />
         </div>
-        <div className={styles.toc_wrapper}>
+        <div className={styles.toc_section}>
           <div className={styles.section_name}>/ TABLE OF CONTENTS</div>
           <div className={styles.toc_content}>
             <ul>
