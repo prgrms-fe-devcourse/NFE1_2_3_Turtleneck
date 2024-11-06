@@ -1,4 +1,3 @@
-// /api/category/route.js
 import dbConnect from '@/app/db/dbConnect';
 import Category from '@/app/db/models/category';
 import { NextRequest, NextResponse } from 'next/server';

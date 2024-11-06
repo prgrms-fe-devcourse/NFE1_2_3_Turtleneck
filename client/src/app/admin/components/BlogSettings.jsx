@@ -1,4 +1,3 @@
-// client/src/app/admin/components/BlogSettings.jsx
 import { useState, useEffect } from 'react';
 import { adminApi } from '@/utils/api';
 import styles from './BlogSettings.module.scss';
