@@ -26,6 +26,8 @@
     "react": "^18",
     "react-dom": "^18",
     "react-markdown-editor-lite": "^1.3.4",
+    "remark": "^15.0.1",
+    "remark-html": "^16.0.1",
     "sass": "^1.80.3",
     "swagger-ui-react": "^5.17.14"
   },

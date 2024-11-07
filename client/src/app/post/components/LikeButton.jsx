@@ -65,9 +65,9 @@ const LikeButton = ({
         disabled={isLoading} // 로딩 중일 때 버튼 비활성화
       >
         {isLiked ? (
-          <span className={styles.materialIconLikeTrue}>favorite</span> // 좋아요 상태인 경우 아이콘 변경
+          <span>❤️</span> // 좋아요 상태인 경우 아이콘 변경
         ) : (
-          <span className={styles.materialIconLikeFalse}>favorite</span> // 좋아요 상태가 아닌 경우 아이콘 변경
+          <span>🩶</span> // 좋아요 상태가 아닌 경우 아이콘 변경
         )}
       </button>
       <span className={styles.like_count}>{likeCount}</span> {/* 현재 좋아요 수 표시 */}
